@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Pexels"
 include(":app")
- 
+include(":core:network")
