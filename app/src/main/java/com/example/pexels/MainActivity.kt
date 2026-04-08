@@ -11,8 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.pexels.di.FirstPageProvider
-import com.example.pexels.ui.screens.PhotosScreen
 import com.example.pexels.ui.theme.PexelsTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +19,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PexelsTheme {
-                PhotosScreen(FirstPageProvider.photosViewModel)
+                Scaffold { paddingValues ->
+                    Greeting(
+                        name = "Android" ,
+                        modifier = Modifier.fillMaxSize().padding(paddingValues))
+                }
             }
         }
     }

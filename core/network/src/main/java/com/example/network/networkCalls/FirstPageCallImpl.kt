@@ -11,6 +11,7 @@ internal class FirstPageCallImpl(
 ): FirstPageCall {
     override suspend fun getCuratedPhotos(page: Int, perPage: Int): CuratedResponseDto {
         return try {
+//            refactore the name
             networkCallErrorHandler.handleNetworkCall {
                 firstPageEndpoint.getCuratedPhotos(page, perPage)
             }

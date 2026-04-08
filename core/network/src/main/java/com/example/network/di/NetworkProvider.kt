@@ -15,9 +15,7 @@ object NetworkProvider {
     private val json = Json {
         ignoreUnknownKeys = true
         isLenient = true
-        encodeDefaults = true
         coerceInputValues = true
-        explicitNulls = false
     }
     private val apiKeyInterceptor : Interceptor = ApiKeyInterceptor()
 
@@ -26,7 +24,7 @@ object NetworkProvider {
     }
 
     private val okHttpClient: OkHttpClient = OkHttpClient.Builder()
-        .callTimeout(30, TimeUnit.MINUTES)
+        .callTimeout(30, TimeUnit.SECONDS)
         .addInterceptor(apiKeyInterceptor)
         .addInterceptor(httpLoggingInterceptor)
         .build()

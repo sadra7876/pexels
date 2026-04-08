@@ -1,7 +1,6 @@
 package com.example.network.errorhandling.handler
 
 import com.example.network.errorhandling.ApiExceptions
-import okhttp3.Headers
 import retrofit2.Response
 
 internal class NetworkCallErrorHandlerImpl: NetworkCallErrorHandler {
