@@ -11,6 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.core.navigation.navHost.NavHostContent
 import com.example.pexels.ui.theme.PexelsTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,12 +21,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PexelsTheme {
-                Scaffold { paddingValues ->
-                    Greeting(
-                        name = "Android" ,
-                        modifier = Modifier.fillMaxSize().padding(paddingValues))
-                }
-            }
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    NavHostContent(
+                        modifier = Modifier.padding(innerPadding),
+                        navController = rememberNavController()
+                    )
+                }            }
         }
     }
 }

@@ -11,7 +11,7 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
 object NetworkProvider {
-    private const val baseUrl = "https://api.pexels.com/"
+    private const val baseUrl = "https://api.pexels.com/v1/"
     private val json = Json {
         ignoreUnknownKeys = true
         isLenient = true

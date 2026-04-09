@@ -1,10 +1,10 @@
 package com.example.feature.photos.domain.usecases
 
-import com.example.feature.photos.domain.models.PhotoDN
+import com.example.feature.photos.domain.models.PhotoListDN
 
 interface GetPhotosUseCase {
     suspend operator fun invoke(
         page: Int,
         perPage: Int
-    ): List<PhotoDN>
+    ): List<PhotoListDN>
 }

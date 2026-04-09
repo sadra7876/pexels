@@ -1,110 +1,112 @@
 package com.example.feature.photos.ui.screens
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import com.example.feature.photos.ui.contracts.PhotosUiState
+import com.example.feature.photos.domain.models.PhotoListDN
+import kotlinx.coroutines.withContext
+import java.net.URL
+import kotlin.math.log
 
 @Composable
-fun PhotosScreen(viewModel: PhotosViewModel) {
+fun PhotosScreen(
+    viewModel: PhotosViewModel,
+    onNavigateToRoute: (Long) -> Unit,
+) {
 
-    var page by remember { mutableStateOf("") }
-    var perPage by remember { mutableStateOf("") }
+    val state by viewModel.uiState.collectAsState()
+    val gridState = rememberLazyGridState()
 
-    val uiState by viewModel.uiState.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.loadFirstPage(perPage = 10)
+    }
 
-    Column(modifier = Modifier.padding(16.dp)) {
+    // pagination
+    LaunchedEffect(gridState) {
+        snapshotFlow {
+            gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+        }.collect { lastIndex ->
+            if (lastIndex == state.photos.lastIndex) {
+                viewModel.loadNextPage(perPage = 10)
+            }
+        }
+    }
 
-        OutlinedTextField(
-            value = page,
-            onValueChange = { page = it },
-            label = { Text("Page") },
-            modifier = Modifier.fillMaxWidth()
-        )
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(3),
+        state = gridState,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Log.d("Photos", "size = ${state.photos.size}")
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = perPage,
-            onValueChange = { perPage = it },
-            label = { Text("Per Page") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                val pageInt = page.toIntOrNull() ?: 1
-                val perPageInt = perPage.toIntOrNull() ?: 10
-                viewModel.loadPhotos(pageInt, perPageInt)
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Load Photos")
+        items(state.photos) { photo ->
+            PhotoItem(
+                photo = photo,
+                onClick = {onNavigateToRoute(photo.id)}
+                )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        when (uiState) {
-
-            is PhotosUiState.Idle -> {
-                Text("Enter values and click button")
-            }
-
-            is PhotosUiState.Loading -> {
-                CircularProgressIndicator()
-            }
-
-            is PhotosUiState.Success -> {
-                val photos = (uiState as PhotosUiState.Success).photos
-
-                LazyColumn {
-                    items(photos) { photo ->
-                        PhotoItem(photo)
-                    }
-                }
-            }
-
-            is PhotosUiState.Error -> {
-                val message = (uiState as PhotosUiState.Error).message
-                Text("Error: $message")
+        if (state.isLoadingMore) {
+            item(span = { GridItemSpan(3) }) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .padding(16.dp)
+                )
             }
         }
     }
 }
 
 @Composable
-fun PhotoItem(photo: com.example.feature.photos.domain.models.PhotoDN) {
+private fun PhotoItem(
+    photo: PhotoListDN,
+    onClick: () -> Unit,) {
 
     val imageUrl = photo.src.medium
-    var bitmap by remember { mutableStateOf<android.graphics.Bitmap?>(null) }
+    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
     LaunchedEffect(imageUrl) {
         try {
-            bitmap = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
-                val stream = java.net.URL(imageUrl).openStream()
-                android.graphics.BitmapFactory.decodeStream(stream)
+            bitmap = withContext(kotlinx.coroutines.Dispatchers.IO) {
+                val stream = URL(imageUrl).openStream()
+                BitmapFactory.decodeStream(stream)
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
-
-    bitmap?.let {
-        Image(
-            bitmap = it.asImageBitmap(),
-            contentDescription = null,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(8.dp)
-        )
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f)
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(onClick = onClick),
+    ){
+        bitmap?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(8.dp)
+            )
+        }
     }
+
 }

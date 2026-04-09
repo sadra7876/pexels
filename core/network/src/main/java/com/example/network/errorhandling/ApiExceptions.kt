@@ -11,11 +11,38 @@ sealed class ApiExceptions(
         private fun readResolve(): Any = NotFoundException
     }
 
-    data object ConnectionError: ApiExceptions(
-        title = "Connection Error",
-        message = "Please check your internet connection"
-    ) {
-        private fun readResolve(): Any = ConnectionError
+    data object UnKnownException:ApiExceptions(
+        title = "UnKnown Error",
+        message = "Something went wrong"
+    ){
+        private fun readResolve(): Any = UnKnownException
     }
 
+    data object TimeoutException: ApiExceptions(
+        title = "Timeout",
+        message = "Request timed out"
+    ) {
+        private fun readResolve(): Any = TimeoutException
+    }
+
+    data object UnauthorizedException:ApiExceptions(
+        title = "Unauthorized",
+        message = "You are not authorized to perform this action"
+    ){
+        private fun readResolve(): Any = UnauthorizedException
+    }
+
+    data object RateLimitException:ApiExceptions(
+        title = "Rate Limit Exceeded",
+        message = "You have exceeded your rate limit"
+    ){
+        private fun readResolve(): Any = RateLimitException
+    }
+
+    data object ServerErrorException:ApiExceptions(
+        title = "Server Error",
+        message = "Something went wrong on our side"
+    ){
+        private fun readResolve(): Any = ServerErrorException
+    }
 }

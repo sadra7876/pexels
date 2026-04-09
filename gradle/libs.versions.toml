@@ -14,6 +14,8 @@ okhttp = "4.12.0"
 kotlinxSerializationJson = "1.6.3"
 appcompat = "1.7.1"
 material = "1.13.0"
+navigation = "2.7.7"
+lifecycle = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +40,8 @@ retrofit-converter-kotlinxserialization = { group = "com.squareup.retrofit2", na
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
+lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

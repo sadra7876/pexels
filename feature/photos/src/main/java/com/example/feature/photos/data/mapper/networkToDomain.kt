@@ -1,18 +1,20 @@
 package com.example.feature.photos.data.mapper
 
-import com.example.network.dto.response.Curated.PhotoResponseDto
-import com.example.network.dto.response.Curated.PhotoSrcResponseDto
+import com.example.feature.photos.domain.models.PhotoListDN
+import com.example.feature.photos.domain.models.PhotoListSrcDN
+import com.example.network.dto.response.photo.PhotoListResponseDto
+import com.example.network.dto.response.photo.PhotoListSrcResponseDto
 
-fun PhotoSrcResponseDto.toPhotoSrcDN() : com.example.feature.photos.domain.models.PhotoSrcDN {
-    return com.example.feature.photos.domain.models.PhotoSrcDN(
+fun PhotoListSrcResponseDto.toPhotoListSrcDN() : PhotoListSrcDN {
+    return PhotoListSrcDN(
         original = this.original,
         medium = this.medium
     )
 }
 
-fun PhotoResponseDto.toPhotoDN() : com.example.feature.photos.domain.models.PhotoDN {
-    return com.example.feature.photos.domain.models.PhotoDN(
+fun PhotoListResponseDto.toPhotoListDN() : PhotoListDN {
+    return PhotoListDN(
         id = this.id,
-        src = this.src.toPhotoSrcDN()
+        src = this.src.toPhotoListSrcDN()
     )
 }

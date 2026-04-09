@@ -25,3 +25,6 @@ rootProject.name = "Pexels"
 include(":app")
 include(":core:network")
 include(":feature:photos")
+include(":common:image:loader")
+include(":core:navigation")
+include(":feature:photoDetail")
