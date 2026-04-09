@@ -6,7 +6,7 @@ import retrofit2.Response
 import java.net.SocketTimeoutException
 
 internal class SafeApiCallerImpl: SafeApiCaller {
-    override suspend fun <T> executeSafely(executor: suspend () -> Response<T>): T {
+    override suspend fun <T : Any> executeSafely(executor: suspend () -> Response<T>): T {
         return try {
             val response = executor()
              when (response.code()) {
@@ -15,7 +15,13 @@ internal class SafeApiCallerImpl: SafeApiCaller {
                  429 -> throw ApiExceptions.RateLimitException
                  500 -> throw ApiExceptions.ServerErrorException
             }
-            response.body()?: throw ApiExceptions.UnKnownException
+
+            @Suppress("UNCHECKED_CAST")
+            response.body()?: try {
+                Unit as T
+            } catch (e: Exception){
+                throw ApiExceptions.UnKnownException
+            }
         }catch (
             e: ApiExceptions
         ) {
