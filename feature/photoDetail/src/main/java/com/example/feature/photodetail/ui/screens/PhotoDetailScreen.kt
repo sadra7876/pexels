@@ -1,5 +1,8 @@
 package com.example.feature.photodetail.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,6 +23,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -70,8 +76,6 @@ fun PhotoDetailScreen(
                 Text(text = (state as PhotoDetailUiState.Error).message)
             }
         }
-
-        else -> Unit
     }
 }
 
@@ -80,7 +84,7 @@ private fun PhotoContent(
     photo: PhotoDN,
     onBackClick: () -> Unit
 ) {
-
+    var animationVisibility by remember { mutableStateOf(false) }
     val bgColor = Color(photo.avgColor.toColorInt())
 
     Box(
@@ -92,7 +96,22 @@ private fun PhotoContent(
         PexelImageLoader(
             modifier = Modifier.fillMaxSize(),
             imageUrl = photo.src.large,
-            contentScale = ContentScale.Fit
+            contentScale = ContentScale.Fit,
+            onSuccessContent = {
+            LaunchedEffect(Unit) {
+                animationVisibility = true
+            }
+            AnimatedVisibility(
+                visible = animationVisibility,
+                enter = fadeIn(animationSpec = tween(1200))
+            ) {
+                it()
+            }},
+            onLoadingContent = {
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            },
         )
 
         Box(
@@ -123,13 +142,12 @@ private fun PhotoContent(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = photo.alt ?: "",
+                text = photo.alt,
                 color = Color.White.copy(alpha = 0.8f),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
 
-        // 🔙 Back Button
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Back",
@@ -141,20 +159,4 @@ private fun PhotoContent(
                 .clickable { onBackClick() }
         )
     }
-}
-
-@Composable
-private fun PhotoItem(
-    photo: PhotoDN
-) {
-
-    val imageUrl = photo.src.medium
-
-    PexelImageLoader(
-        modifier = Modifier
-            .fillMaxWidth(),
-        imageUrl = imageUrl,
-        contentScale = ContentScale.Fit,
-    )
-
 }

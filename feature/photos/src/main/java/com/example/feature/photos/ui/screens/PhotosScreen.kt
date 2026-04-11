@@ -142,7 +142,6 @@ private fun PhotoItem(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-//            FixMe: Check
             .aspectRatio(photo.width.toFloat() / photo.height)
             .clip(RoundedCornerShape(16.dp))
             .background(Color.LightGray.copy(alpha = 0.2f))
