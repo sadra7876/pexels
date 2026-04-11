@@ -2,6 +2,7 @@ package com.example.network.endpoints
 
 import com.example.network.dto.response.photo.CuratedResponseDto
 import com.example.network.dto.response.photo.PhotoResponseDto
+import com.example.network.dto.response.photo.SearchResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,4 +20,11 @@ internal interface PhotosEndpoint {
     suspend fun getPhoto(
         @Path("id") id: Long
     ): Response<PhotoResponseDto>
+
+    @GET("search")
+    suspend fun searchPhotos(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
+    ): Response<SearchResponseDto>
 }

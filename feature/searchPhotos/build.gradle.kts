@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.core.navigation"
+    namespace = "com.example.searchphotos"
     compileSdk = 36
 
     defaultConfig {
@@ -46,14 +46,11 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.navigation.compose)
-    implementation(libs.lifecycle.viewmodel.compose)
+
+    implementation(projects.core.network)
+    implementation(projects.common.image.loader)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    implementation(projects.feature.photos)
-    implementation(projects.feature.photoDetail)
-    implementation(projects.feature.searchPhotos)
 }

@@ -12,10 +12,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.core.navigation.viewModelFactories.PhotoDetailViewModelFactory
 import com.example.core.navigation.viewModelFactories.PhotosViewModelFactory
+import com.example.core.navigation.viewModelFactories.SearchPhotosViewModelFactory
 import com.example.feature.photodetail.di.PhotoDetailFeatureProvider
 import com.example.feature.photodetail.ui.screens.PhotoDetailScreen
 import com.example.feature.photos.di.PhotosFeatureProvider
 import com.example.feature.photos.ui.screens.PhotosScreen
+import com.example.searchphotos.di.SearchPhotosFeatureProvider
+import com.example.searchphotos.ui.screens.SearchPhotosScreen
 
 
 fun NavGraphBuilder.mainGraph(navController: NavController) {
@@ -29,7 +32,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         PhotosScreen(
             viewModel = backStack.screenViewModel(navController,factory),
             onNavigateToDetail = { navController.navigate("B/${it}")},
-            onNavigateToSearch = {}
+            onNavigateToSearch = { navController.navigate("Search")}
         )
     }
 
@@ -48,6 +51,18 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
             photoId = id,
             onBackClick = navController::popBackStack
         )
+    }
+
+    composable("Search") { backStack ->
+        val factory = remember {
+            SearchPhotosViewModelFactory(SearchPhotosFeatureProvider.searchPhotosUseCase)
+        }
+
+        SearchPhotosScreen(
+            viewModel = backStack.screenViewModel(navController, factory),
+            onBackClick = navController::popBackStack,
+            onPhotoClick = { navController.navigate("B/${it}")},
+            )
     }
 }
 

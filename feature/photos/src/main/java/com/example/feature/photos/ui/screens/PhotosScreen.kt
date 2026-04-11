@@ -43,7 +43,7 @@ fun PhotosScreen(
         snapshotFlow {
             gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
         }.collect { lastIndex ->
-            if (lastIndex == state.photos.lastIndex) {
+            if (lastIndex == state.photos.lastIndex ) {
                 viewModel.loadNextPage(perPage = 10)
             }
         }

@@ -2,6 +2,7 @@ package com.example.network.networkCalls.photo
 
 import com.example.network.dto.response.photo.CuratedResponseDto
 import com.example.network.dto.response.photo.PhotoResponseDto
+import com.example.network.dto.response.photo.SearchResponseDto
 import com.example.network.endpoints.PhotosEndpoint
 import com.example.network.errorhandling.ApiExceptions
 import com.example.network.errorhandling.handler.SafeApiCaller
@@ -24,6 +25,16 @@ internal class PhotosRemoteDataSourceImpl(
         return try {
             safeApiCaller.executeSafely {
                 photosEndpoint.getPhoto(id)
+            }
+        }catch (e:ApiExceptions){
+            throw e
+        }
+    }
+
+    override suspend fun searchPhotos(query: String, page: Int, perPage: Int): SearchResponseDto {
+        return try {
+            safeApiCaller.executeSafely {
+                photosEndpoint.searchPhotos(query, page, perPage)
             }
         }catch (e:ApiExceptions){
             throw e
