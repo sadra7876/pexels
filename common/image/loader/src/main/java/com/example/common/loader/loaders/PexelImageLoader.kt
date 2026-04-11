@@ -81,7 +81,7 @@ fun PexelImageLoader(
         alignment = alignment,
         imageSource = imageUrl,
         transformation = transformation,
-        size = null,
+        size = if (width != null && height != null) Size(width = width, height = height) else null,
         enableCrossfade = enableCrossfade
     )
 }
