@@ -28,7 +28,8 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
 
         PhotosScreen(
             viewModel = backStack.screenViewModel(navController,factory),
-            onNavigateToRoute = { navController.navigate("B/${it}")}
+            onNavigateToDetail = { navController.navigate("B/${it}")},
+            onNavigateToSearch = {}
         )
     }
 
@@ -44,7 +45,8 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
 
         PhotoDetailScreen (
             viewModel = backStack.screenViewModel(navController, factory),
-            photoId = id
+            photoId = id,
+            onBackClick = navController::popBackStack
         )
     }
 }

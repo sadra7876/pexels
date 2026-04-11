@@ -1,18 +1,16 @@
 package com.example.common.loader.loaders
 
 import android.content.Context
-import coil3.ImageLoader
-import coil3.decode.BitmapFactoryDecoder
-import coil3.disk.DiskCache
-import coil3.disk.directory
-import coil3.memory.MemoryCache
-import coil3.request.CachePolicy
-import coil3.request.ErrorResult
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import coil3.request.transformations
-import coil3.size.Size
-import coil3.transform.Transformation
+import coil.ImageLoader
+import coil.decode.BitmapFactoryDecoder
+import coil.disk.DiskCache
+import coil.memory.MemoryCache
+import coil.request.CachePolicy
+import coil.request.ErrorResult
+import coil.request.ImageRequest
+
+import coil.size.Size
+import coil.transform.Transformation
 
 
 class PexelImageLoaderProvider(
@@ -22,9 +20,8 @@ class PexelImageLoaderProvider(
         .memoryCachePolicy(CachePolicy.ENABLED)
         .diskCachePolicy(CachePolicy.ENABLED)
         .memoryCache(
-            MemoryCache.Builder()
+            MemoryCache.Builder(context)
                 .maxSizePercent(
-                    context,
                     0.25)
                 .build()
         )

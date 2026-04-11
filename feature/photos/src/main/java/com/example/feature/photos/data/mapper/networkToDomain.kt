@@ -7,14 +7,18 @@ import com.example.network.dto.response.photo.PhotoListSrcResponseDto
 
 fun PhotoListSrcResponseDto.toPhotoListSrcDN() : PhotoListSrcDN {
     return PhotoListSrcDN(
-        original = this.original,
-        medium = this.medium
+        original = original,
+        medium = medium,
+        small = small,
+        tiny = tiny
     )
 }
 
 fun PhotoListResponseDto.toPhotoListDN() : PhotoListDN {
     return PhotoListDN(
-        id = this.id,
-        src = this.src.toPhotoListSrcDN()
+        id = id,
+        width = width,
+        height = height,
+        src = src.toPhotoListSrcDN()
     )
 }

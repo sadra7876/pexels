@@ -7,16 +7,20 @@ import com.example.network.dto.response.photo.PhotoSrcResponseDto
 
 fun PhotoSrcResponseDto.toPhotoSrcDN() : PhotoSrcDN {
     return PhotoSrcDN(
-        original = this.original,
-        medium = this.medium
+        original = original,
+        medium = medium,
+        large = large
     )
 }
 
 fun PhotoResponseDto.toPhotoDN() : PhotoDN {
     return PhotoDN(
-        id = this.id,
-        width = this.width,
-        height = this.height,
-        src = this.src.toPhotoSrcDN()
+        id = id,
+        avgColor = avgColor,
+        width = width,
+        height = height,
+        src = src.toPhotoSrcDN(),
+        photographer = photographer,
+        alt = alt
     )
 }

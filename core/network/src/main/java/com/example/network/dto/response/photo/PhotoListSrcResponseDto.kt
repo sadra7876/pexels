@@ -5,5 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PhotoListSrcResponseDto (
     val original: String,
-    val medium : String
+    val medium : String,
+    val small : String,
+    val tiny : String
 )

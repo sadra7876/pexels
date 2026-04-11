@@ -11,21 +11,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
-import coil3.ImageLoader
-import coil3.compose.AsyncImagePainter.State
-import coil3.compose.SubcomposeAsyncImage
-import coil3.size.Size
-import coil3.transform.Transformation
-import kotlin.reflect.typeOf
+import coil.ImageLoader
+import coil.compose.AsyncImagePainter.State
+import coil.compose.SubcomposeAsyncImage
+import coil.size.Size
+import coil.transform.Transformation
 
 val LocalImageLoader  = staticCompositionLocalOf<PexelImageLoaderProvider> { error("No image loader provided") }
+
 
 @Composable
 private fun InternalPexelImageLoader(
     modifier: Modifier,
     contentScale: ContentScale,
     alignment: Alignment,
-    imageSource : Any,
+    imageSource : String,
     transformation: List<Transformation>,
     size: Size? = null,
     enableCrossfade: Boolean = true,
@@ -42,15 +42,12 @@ private fun InternalPexelImageLoader(
     var currentSource by remember(imageSource) { mutableStateOf(imageSource) }
 
     val imageRequest = remember (currentSource){
-        when(currentSource){
-            is String -> imageLoaderProvider?.buildImageRequest(
-                data = currentSource as String,
+        imageLoaderProvider?.buildImageRequest(
+                data = currentSource,
                 enableCrossfade = enableCrossfade,
                 transformations = transformation,
                 size = size
-            )
-            else -> throw IllegalArgumentException(" unsupported image type ")
-        }
+        )
     }
 
     SubcomposeAsyncImage(
@@ -60,7 +57,7 @@ private fun InternalPexelImageLoader(
         model = imageRequest,
         contentScale = contentScale,
         alignment = alignment,
-        onSuccess = onSuccess,
+//        onSuccess = onSuccess,
 //        loading = onLoadingContent,
 //        onError = onErrorContent
     )
@@ -72,8 +69,9 @@ fun PexelImageLoader(
     imageUrl: String,
     contentScale: ContentScale = ContentScale.FillWidth,
     alignment: Alignment = Alignment.Center,
-    transformation: List<Transformation>,
-    size: Size? = null,
+    transformation: List<Transformation> = emptyList(),
+    width: Int? = null,
+    height: Int? = null,
     enableCrossfade: Boolean = true,
 
     ) {
@@ -83,7 +81,7 @@ fun PexelImageLoader(
         alignment = alignment,
         imageSource = imageUrl,
         transformation = transformation,
-        size = size,
+        size = null,
         enableCrossfade = enableCrossfade
     )
 }

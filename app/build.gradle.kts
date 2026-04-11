@@ -61,5 +61,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(projects.core.navigation)
+    implementation(projects.common.image.loader)
+
 
 }

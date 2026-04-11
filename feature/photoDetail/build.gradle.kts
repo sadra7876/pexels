@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(projects.core.network)
+    implementation(projects.common.image.loader)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
