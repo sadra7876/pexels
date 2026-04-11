@@ -11,7 +11,7 @@ import com.example.core.navigation.graphs.mainGraph
 fun NavHostContent(
     modifier: Modifier = Modifier,
     initialRout: String = "MainScreens",
-    startDestination: String = "A",
+    startDestination: String = "PhotosScreen",
     navController: NavHostController
 ) {
     NavHost(

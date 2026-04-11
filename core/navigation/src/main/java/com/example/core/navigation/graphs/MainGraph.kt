@@ -23,7 +23,7 @@ import com.example.searchphotos.ui.screens.SearchPhotosScreen
 
 fun NavGraphBuilder.mainGraph(navController: NavController) {
 
-    composable("A") { backStack ->
+    composable("PhotosScreen") { backStack ->
 
         val factory = remember {
             PhotosViewModelFactory(PhotosFeatureProvider.getPhotosUseCase)
@@ -31,12 +31,12 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
 
         PhotosScreen(
             viewModel = backStack.screenViewModel(navController,factory),
-            onNavigateToDetail = { navController.navigate("B/${it}")},
-            onNavigateToSearch = { navController.navigate("Search")}
+            onNavigateToDetail = { navController.navigate("PhotoDetailScreen/${it}")},
+            onNavigateToSearch = { navController.navigate("SearchPhotosScreen")}
         )
     }
 
-    composable("B/{postId}") { backStack ->
+    composable("PhotoDetailScreen/{postId}") { backStack ->
 
         val factory = remember {
             PhotoDetailViewModelFactory(PhotoDetailFeatureProvider.getPhotoUseCase)
@@ -53,7 +53,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         )
     }
 
-    composable("Search") { backStack ->
+    composable("SearchPhotosScreen") { backStack ->
         val factory = remember {
             SearchPhotosViewModelFactory(SearchPhotosFeatureProvider.searchPhotosUseCase)
         }
@@ -61,7 +61,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         SearchPhotosScreen(
             viewModel = backStack.screenViewModel(navController, factory),
             onBackClick = navController::popBackStack,
-            onPhotoClick = { navController.navigate("B/${it}")},
+            onPhotoClick = { navController.navigate("PhotoDetailScreen/${it}")},
             )
     }
 }
