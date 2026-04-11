@@ -1,6 +1,7 @@
 package com.example.core.navigation.graphs
 
-import android.util.Log
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
@@ -36,15 +37,18 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         )
     }
 
-    composable("PhotoDetailScreen/{postId}") { backStack ->
+    composable(
+        route = "PhotoDetailScreen/{postId}",
+        enterTransition = {
+            scaleIn(initialScale = -2f) + fadeIn()
+        },
+    ) { backStack ->
 
         val factory = remember {
             PhotoDetailViewModelFactory(PhotoDetailFeatureProvider.getPhotoUseCase)
         }
 
         val id = backStack.arguments?.getString("postId")?.toLong() ?: 0L
-
-        Log.d("Photos", "id = $id")
 
         PhotoDetailScreen (
             viewModel = backStack.screenViewModel(navController, factory),

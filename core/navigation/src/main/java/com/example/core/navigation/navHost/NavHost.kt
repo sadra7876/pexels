@@ -1,5 +1,11 @@
 package com.example.core.navigation.navHost
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -18,6 +24,18 @@ fun NavHostContent(
         modifier = modifier,
         navController = navController,
         startDestination = initialRout,
+        enterTransition = {
+            slideInHorizontally { it } + fadeIn()
+        } ,
+        exitTransition = {
+            slideOutHorizontally { -it } + fadeOut()
+        },
+        popEnterTransition = {
+            slideInHorizontally { -it } + fadeIn()
+        },
+        popExitTransition = {
+            slideOutHorizontally { it } + fadeOut()
+        }
         ) {
             navigation(route="MainScreens" ,startDestination = startDestination,){
                 mainGraph(navController)
