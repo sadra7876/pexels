@@ -35,14 +35,17 @@ fun PhotosScreen(
     val state by viewModel.uiState.collectAsState()
     val gridState = rememberLazyGridState()
 
-    LaunchedEffect(Unit) {
-        viewModel.loadFirstPage(perPage = 10)
-    }
 
-    LaunchedEffect(gridState) {
+    LaunchedEffect(Unit) {
+
+        if (state.photos.isEmpty()) {
+            viewModel.loadFirstPage(perPage = 10)
+        }
+
         snapshotFlow {
             gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
         }.collect { lastIndex ->
+
             if (lastIndex == state.photos.lastIndex ) {
                 viewModel.loadNextPage(perPage = 10)
             }

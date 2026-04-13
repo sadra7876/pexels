@@ -55,8 +55,6 @@ class SearchPhotosViewModel(
 
     private suspend fun loadFirstPage(query: String) {
 
-        _uiState.value = uiState.value.copy(isLoadingMore = true)
-
         try {
             val result = searchPhotosUseCase.invoke(
                 query = query,
