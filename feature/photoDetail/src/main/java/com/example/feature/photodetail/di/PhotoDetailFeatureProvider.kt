@@ -14,7 +14,8 @@ object PhotoDetailFeatureProvider {
     fun provideGetPhotoUseCase(context: Context): GetPhotoUseCase{
         val repository = PhotoDetailRepositoryImpl(
             photosRemoteDataSource = NetWorkCallProvider.photosRemoteDataSource,
-            favoriteDao = DatabaseProvider.favoriteDao(context)
+            favoriteDao = DatabaseProvider.favoriteDao(context),
+            photoDao = DatabaseProvider.photoDao(context)
         )
         return GetPhotoUseCaseImpl(repository)
     }
@@ -22,7 +23,8 @@ object PhotoDetailFeatureProvider {
     fun provideFavoritePhotoUseCase(context: Context): FavoritePhotoUseCase {
         val repository = PhotoDetailRepositoryImpl(
             photosRemoteDataSource = NetWorkCallProvider.photosRemoteDataSource,
-            favoriteDao = DatabaseProvider.favoriteDao(context)
+            favoriteDao = DatabaseProvider.favoriteDao(context),
+            photoDao = DatabaseProvider.photoDao(context)
         )
         return FavoritePhotoUseCaseImpl(repository)
     }

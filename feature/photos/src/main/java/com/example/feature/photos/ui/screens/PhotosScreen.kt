@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -33,6 +34,7 @@ fun PhotosScreen(
     viewModel: PhotosViewModel,
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToSearch: () -> Unit,
+    onNavigateToFavorite: () -> Unit,
 ) {
 
     val photos = viewModel.photos.collectAsLazyPagingItems()
@@ -40,7 +42,10 @@ fun PhotosScreen(
 
     Scaffold(
         topBar = {
-            TopBar(onSearchClick = onNavigateToSearch)
+            TopBar(
+                onSearchClick = onNavigateToSearch,
+                onFavoritesClick = onNavigateToFavorite
+            )
         }
     ) { padding ->
 
@@ -116,7 +121,8 @@ fun PhotosGrid(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    onSearchClick: () -> Unit
+    onSearchClick: () -> Unit,
+    onFavoritesClick: () -> Unit
 ) {
     TopAppBar(
         title = { Text("Photos") },
@@ -125,6 +131,13 @@ fun TopBar(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = "Search"
+                )
+            }
+
+            IconButton(onClick = onFavoritesClick) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Favorites"
                 )
             }
         }

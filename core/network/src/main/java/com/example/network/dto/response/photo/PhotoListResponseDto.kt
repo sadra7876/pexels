@@ -10,7 +10,7 @@ data class PhotoListResponseDto (
     val avgColor: String,
     val width: Int,
     val height: Int,
-    val src: PhotoListSrcResponseDto,
+    val src: PhotoSrcResponseDto,
     val photographer: String,
     val alt: String,
 )

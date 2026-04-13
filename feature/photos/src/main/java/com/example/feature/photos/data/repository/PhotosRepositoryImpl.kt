@@ -9,6 +9,7 @@ import androidx.paging.map
 import com.example.core.database.dao.PhotoDao
 import com.example.core.database.dao.RemoteKeysDao
 import com.example.core.database.dao.TransactionRunnerDao
+import com.example.feature.photos.data.mapper.toPhotoListDN
 import com.example.feature.photos.data.mediator.PhotoRemoteMediator
 import com.example.network.networkCalls.photo.PhotosRemoteDataSource
 import com.example.feature.photos.domain.models.PhotoListDN
@@ -42,19 +43,7 @@ internal class PhotosRepositoryImpl(
         ).flow
             .map { pagingData ->
                 pagingData.map { entity ->
-                    PhotoListDN(
-                        id = entity.photo.id,
-                        width = entity.photo.width,
-                        height = entity.photo.height,
-                        src = PhotoListSrcDN(
-                            entity.photo.src.original,
-                            entity.photo.src.medium,
-                            entity.photo.src.small,
-                            entity.photo.src.tiny
-                        )
-                        ,isFavorite = entity.isFavorite
-                    )
-
+                    entity.toPhotoListDN()
                 }
             }
     }

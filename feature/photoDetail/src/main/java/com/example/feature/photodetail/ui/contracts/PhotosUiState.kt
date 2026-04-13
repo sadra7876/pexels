@@ -4,9 +4,6 @@ import com.example.feature.photodetail.domain.models.PhotoDN
 
 sealed class PhotoDetailUiState {
     data object Loading : PhotoDetailUiState()
-    data class Success(
-        val photo: PhotoDN,
-        val isFavorite: Boolean
-        ) : PhotoDetailUiState()
+    data class Success(val photo: PhotoDN,) : PhotoDetailUiState()
     data class Error(val message: String) : PhotoDetailUiState()
 }

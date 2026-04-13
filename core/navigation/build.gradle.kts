@@ -56,4 +56,5 @@ dependencies {
     implementation(projects.feature.photos)
     implementation(projects.feature.photoDetail)
     implementation(projects.feature.searchPhotos)
+    implementation(projects.feature.favoritePhotos)
 }

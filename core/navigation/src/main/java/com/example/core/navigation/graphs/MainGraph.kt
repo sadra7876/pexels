@@ -12,9 +12,12 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.core.navigation.viewModelFactories.FavoritePhotosViewModelFactory
 import com.example.core.navigation.viewModelFactories.PhotoDetailViewModelFactory
 import com.example.core.navigation.viewModelFactories.PhotosViewModelFactory
 import com.example.core.navigation.viewModelFactories.SearchPhotosViewModelFactory
+import com.example.feature.favoritephotos.di.FavoritePhotosFeatureProvider
+import com.example.feature.favoritephotos.ui.FavoritePhotosScreen
 import com.example.feature.photodetail.di.PhotoDetailFeatureProvider
 import com.example.feature.photodetail.ui.screens.PhotoDetailScreen
 import com.example.feature.photos.di.PhotosFeatureProvider
@@ -36,7 +39,8 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         PhotosScreen(
             viewModel = backStack.screenViewModel(navController,factory),
             onNavigateToDetail = { navController.navigate("PhotoDetailScreen/${it}")},
-            onNavigateToSearch = { navController.navigate("SearchPhotosScreen")}
+            onNavigateToSearch = { navController.navigate("SearchPhotosScreen")},
+            onNavigateToFavorite = {navController.navigate("FavoritePhotosScreen")}
         )
     }
 
@@ -74,6 +78,20 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
             viewModel = backStack.screenViewModel(navController, factory),
             onBackClick = navController::popBackStack,
             onPhotoClick = { navController.navigate("PhotoDetailScreen/${it}")},
+            )
+    }
+
+    composable("FavoritePhotosScreen") { backStack ->
+        val context = LocalContext.current
+
+        val factory = remember {
+            FavoritePhotosViewModelFactory(FavoritePhotosFeatureProvider.provide(context))
+        }
+
+        FavoritePhotosScreen(
+            viewModel = backStack.screenViewModel(navController, factory),
+            onNavigateToDetail = { navController.navigate("PhotoDetailScreen/${it}")},
+            onBackClick = navController::popBackStack,
             )
     }
 }

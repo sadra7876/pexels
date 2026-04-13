@@ -9,5 +9,6 @@ data class SearchPhotosUiState(
     val isLoadingMore: Boolean = false,
     val page: Int = 1,
     val hasNextPage: Boolean = true,
-    val error: String? = null
+    val error: String? = null,
+    val history: List<SearchPhotoDN> = emptyList()
 )

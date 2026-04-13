@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import com.example.core.database.PexelsDataBase
 import android.content.Context
 import androidx.room.Room
+import com.example.core.database.migrations.MIGRATION_1_2
 
 object DatabaseProvider {
     @Volatile
@@ -15,6 +16,8 @@ object DatabaseProvider {
                 context.applicationContext,
                 PexelsDataBase::class.java,
                 "app_database"
+            ).addMigrations(
+                MIGRATION_1_2
             ).build()
 
             INSTANCE = instance

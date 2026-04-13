@@ -1,11 +1,12 @@
 package com.example.feature.photodetail.domain.repository
 
 import com.example.feature.photodetail.domain.models.PhotoDN
+import kotlinx.coroutines.flow.Flow
 
 interface PhotoDetailRepository {
-    suspend fun getPhoto(
+    fun getPhoto(
         id: Long
-    ): PhotoDN
+    ): Flow<PhotoDN>
 
     suspend fun addToFavorite(photoId: Long)
 

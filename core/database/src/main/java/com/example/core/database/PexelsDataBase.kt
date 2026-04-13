@@ -18,7 +18,7 @@ import com.example.core.database.utils.Converters
         RemoteKeys::class,
         FavoritePhotoEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

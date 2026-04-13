@@ -8,10 +8,9 @@ import androidx.paging.RemoteMediator
 import com.example.core.database.dao.PhotoDao
 import com.example.core.database.dao.RemoteKeysDao
 import com.example.core.database.dao.TransactionRunnerDao
-import com.example.core.database.entities.PhotoEntity
 import com.example.core.database.entities.RemoteKeys
-import com.example.core.database.entities.dbo.PhotoSrcDbo
 import com.example.core.database.relations.PhotoWithFavorite
+import com.example.core.mapper.toPhotoEntity
 import com.example.network.networkCalls.photo.PhotosRemoteDataSource
 
 @OptIn(ExperimentalPagingApi::class)
@@ -71,22 +70,7 @@ class PhotoRemoteMediator(
 
                 photoDao.insertAll(
                     response.map {
-                        PhotoEntity(
-                            id = it.id,
-                            avgColor = it.avgColor,
-                            width = it.width,
-                            height = it.height,
-                            photographer = it.photographer,
-                            alt = it.alt,
-                            src = PhotoSrcDbo(
-                                large = it.src.large,
-                                original = it.src.original,
-                                medium = it.src.medium,
-                                small = it.src.small,
-                                tiny = it.src.tiny
-                            ),
-                            page = page
-                        )
+                        it.toPhotoEntity(page)
                     }
                 )
             }

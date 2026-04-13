@@ -8,4 +8,5 @@ data class PhotoDN (
     val src: PhotoSrcDN,
     val photographer: String,
     val alt: String,
+    val isFavorite: Boolean
 )

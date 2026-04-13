@@ -22,9 +22,9 @@ class PhotoDetailViewModel(
             _uiState.value = PhotoDetailUiState.Loading
 
             try {
-                val photo = getPhotoUseCase(id)
-                val isFavorite = favoritePhotoUseCase.isFavorite(id)
-                _uiState.value = PhotoDetailUiState.Success(photo, isFavorite)
+                getPhotoUseCase(id).collect{
+                    _uiState.value = PhotoDetailUiState.Success(it)
+                }
             } catch (e: Exception) {
                 _uiState.value =
                     PhotoDetailUiState.Error(e.message ?: "Unknown error")
@@ -34,12 +34,11 @@ class PhotoDetailViewModel(
 
     fun toggleFavorite(state: PhotoDetailUiState.Success) {
         viewModelScope.launch {
-            if (!state.isFavorite) {
+            if (!state.photo.isFavorite) {
                 favoritePhotoUseCase.addToFavorite(state.photo.id)
             } else {
                 favoritePhotoUseCase.removeFromFavorite(state.photo.id)
             }
-            _uiState.value = state.copy(isFavorite = !state.isFavorite)
         }
 
     }

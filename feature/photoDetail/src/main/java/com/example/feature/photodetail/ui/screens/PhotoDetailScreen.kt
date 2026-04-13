@@ -155,12 +155,12 @@ private fun PhotoContent(
         }
 
         Icon(
-            imageVector = if (state.isFavorite)
+            imageVector = if (state.photo.isFavorite)
                 Icons.Filled.Favorite
             else
                 Icons.Filled.FavoriteBorder,
             contentDescription = "Favorite",
-            tint = if (state.isFavorite) Color.Red else Color.White,
+            tint = if (state.photo.isFavorite) Color.Red else Color.White,
             modifier = Modifier
                 .padding(16.dp)
                 .size(28.dp)
