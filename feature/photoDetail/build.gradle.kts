@@ -49,6 +49,7 @@ dependencies {
 
     implementation(projects.core.network)
     implementation(projects.common.image.loader)
+    implementation(projects.core.database)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

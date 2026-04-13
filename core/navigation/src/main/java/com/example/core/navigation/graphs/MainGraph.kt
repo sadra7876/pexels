@@ -4,6 +4,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,8 +27,10 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
 
     composable("PhotosScreen") { backStack ->
 
+        val context = LocalContext.current
+
         val factory = remember {
-            PhotosViewModelFactory(PhotosFeatureProvider.getPhotosUseCase)
+            PhotosViewModelFactory(PhotosFeatureProvider.provide(context))
         }
 
         PhotosScreen(
@@ -44,8 +47,13 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         },
     ) { backStack ->
 
+        val context = LocalContext.current
+
         val factory = remember {
-            PhotoDetailViewModelFactory(PhotoDetailFeatureProvider.getPhotoUseCase)
+            PhotoDetailViewModelFactory(
+                PhotoDetailFeatureProvider.provideGetPhotoUseCase(context),
+                PhotoDetailFeatureProvider.provideFavoritePhotoUseCase(context)
+            )
         }
 
         val id = backStack.arguments?.getString("postId")?.toLong() ?: 0L

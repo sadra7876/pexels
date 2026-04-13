@@ -1,15 +1,17 @@
 package com.example.feature.photos.domain.usecases
 
+import androidx.paging.PagingData
 import com.example.feature.photos.domain.models.PhotoListDN
 import com.example.feature.photos.domain.repository.PhotosRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 
 internal class GetPhotosUseCaseImpl (
     private val repository: PhotosRepository
 ) : GetPhotosUseCase {
-    override suspend fun invoke(page: Int, perPage: Int): List<PhotoListDN> =
-        withContext(Dispatchers.IO) {
-            repository.getPhotos(page, perPage)
-        }
+    override fun invoke(): Flow<PagingData<PhotoListDN>> =
+            repository.getPhotos().flowOn(Dispatchers.IO)
+
+
 }

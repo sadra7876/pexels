@@ -9,12 +9,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -63,9 +64,13 @@ fun PhotoDetailScreen(
         }
 
         is PhotoDetailUiState.Success -> {
-            val photo = (state as PhotoDetailUiState.Success).photo
 
-            PhotoContent(photo, onBackClick)
+
+            PhotoContent(
+                state as PhotoDetailUiState.Success,
+                onBackClick,
+                viewModel::toggleFavorite
+                )
         }
 
         is PhotoDetailUiState.Error -> {
@@ -81,11 +86,12 @@ fun PhotoDetailScreen(
 
 @Composable
 private fun PhotoContent(
-    photo: PhotoDN,
-    onBackClick: () -> Unit
+    state: PhotoDetailUiState.Success,
+    onBackClick: () -> Unit,
+    ontToggleFavorite: (state: PhotoDetailUiState.Success) -> Unit
 ) {
     var animationVisibility by remember { mutableStateOf(false) }
-    val bgColor = Color(photo.avgColor.toColorInt())
+    val bgColor = Color(state.photo.avgColor.toColorInt())
 
     Box(
         modifier = Modifier
@@ -95,7 +101,7 @@ private fun PhotoContent(
 
         PexelImageLoader(
             modifier = Modifier.fillMaxSize(),
-            imageUrl = photo.src.large,
+            imageUrl = state.photo.src.large,
             contentScale = ContentScale.Fit,
             onSuccessContent = {
             LaunchedEffect(Unit) {
@@ -134,7 +140,7 @@ private fun PhotoContent(
         ) {
 
             Text(
-                text = photo.photographer,
+                text = state.photo.photographer,
                 color = Color.White,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -142,11 +148,27 @@ private fun PhotoContent(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = photo.alt,
+                text = state.photo.alt,
                 color = Color.White.copy(alpha = 0.8f),
                 style = MaterialTheme.typography.bodyMedium
             )
         }
+
+        Icon(
+            imageVector = if (state.isFavorite)
+                Icons.Filled.Favorite
+            else
+                Icons.Filled.FavoriteBorder,
+            contentDescription = "Favorite",
+            tint = if (state.isFavorite) Color.Red else Color.White,
+            modifier = Modifier
+                .padding(16.dp)
+                .size(28.dp)
+                .align(Alignment.TopEnd)
+                .clickable {
+                    ontToggleFavorite(state)
+                }
+        )
 
         Icon(
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,

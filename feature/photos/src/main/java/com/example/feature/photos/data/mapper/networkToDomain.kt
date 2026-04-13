@@ -19,6 +19,7 @@ fun PhotoListResponseDto.toPhotoListDN() : PhotoListDN {
         id = id,
         width = width,
         height = height,
-        src = src.toPhotoListSrcDN()
+        src = src.toPhotoListSrcDN(),
+        isFavorite = false
     )
 }

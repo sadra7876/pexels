@@ -8,9 +8,10 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,10 +22,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.common.loader.loaders.PexelImageLoader
 import com.example.feature.photos.domain.models.PhotoListDN
-import com.example.feature.photos.ui.contracts.PhotosUiState
-
 
 @Composable
 fun PhotosScreen(
@@ -32,25 +34,9 @@ fun PhotosScreen(
     onNavigateToDetail: (Long) -> Unit,
     onNavigateToSearch: () -> Unit,
 ) {
-    val state by viewModel.uiState.collectAsState()
+
+    val photos = viewModel.photos.collectAsLazyPagingItems()
     val gridState = rememberLazyGridState()
-
-
-    LaunchedEffect(Unit) {
-
-        if (state.photos.isEmpty()) {
-            viewModel.loadFirstPage(perPage = 10)
-        }
-
-        snapshotFlow {
-            gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-        }.collect { lastIndex ->
-
-            if (lastIndex == state.photos.lastIndex ) {
-                viewModel.loadNextPage(perPage = 10)
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -59,7 +45,7 @@ fun PhotosScreen(
     ) { padding ->
 
         PhotosGrid(
-            state = state,
+            photos = photos,
             gridState = gridState,
             onClick = onNavigateToDetail,
             modifier = Modifier.padding(padding)
@@ -67,15 +53,18 @@ fun PhotosScreen(
     }
 }
 
+
 @Composable
 fun PhotosGrid(
-    state: PhotosUiState,
+    photos: LazyPagingItems<PhotoListDN>,
     gridState: LazyGridState,
     onClick: (Long) -> Unit,
     modifier: Modifier
 ) {
 
-    if (state.photos.isEmpty() && state.isLoading) {
+    val loadState = photos.loadState
+
+    if (loadState.refresh is LoadState.Loading) {
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -94,23 +83,31 @@ fun PhotosGrid(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
-        items(state.photos) { photo ->
-            PhotoItem(
-                photo = photo,
-                onClick = {onClick(photo.id)}
+        items(photos.itemCount) { index ->
+            photos[index]?.let { photo ->
+                PhotoItem(
+                    photo = photo,
+                    onClick = { onClick(photo.id) }
                 )
+            }
         }
 
-        if (state.isLoadingMore) {
+        if (loadState.append is LoadState.Loading) {
             item(span = { GridItemSpan(99) }) {
                 Box(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
+            }
+        }
+
+        if (loadState.append is LoadState.Error) {
+            item(span = { GridItemSpan(99) }) {
+                Text("Error loading more...")
             }
         }
     }
@@ -158,6 +155,18 @@ private fun PhotoItem(
             width = 600,
             height = 600
         )
+        if (photo.isFavorite){
+            Icon(
+                imageVector = Icons.Filled.Favorite,
+                contentDescription = "Favorite",
+                tint = Color.Red,
+                modifier = Modifier
+                    .padding(12.dp)
+                    .size(18.dp)
+                    .align(Alignment.BottomEnd)
+            )
+
+        }
 
         Box(
             modifier = Modifier
