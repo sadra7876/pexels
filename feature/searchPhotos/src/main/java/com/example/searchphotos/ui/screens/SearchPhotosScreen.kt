@@ -11,18 +11,18 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -52,7 +52,7 @@ fun SearchPhotosScreen(
 ) {
 
     val state by viewModel.uiState.collectAsState()
-    val gridState = rememberLazyGridState()
+    val gridState = rememberLazyStaggeredGridState()
 
     fun onPhotoClick(photo: PhotoDN) {
         viewModel.onPhotoClicked(photo)
@@ -179,27 +179,29 @@ fun SearchTopBar(
 @Composable
 fun SearchGrid(
     photos: List<PhotoDN>,
-    gridState: LazyGridState,
+    gridState: LazyStaggeredGridState,
     isLoadingMore: Boolean,
     onClick: (PhotoDN) -> Unit
 ) {
 
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(120.dp),
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Adaptive(120.dp),
         state = gridState,
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalItemSpacing = 18.dp
     ) {
 
-        items(photos) { photo ->
-            PhotoItem(
-                photo = photo,
-                onClick = { onClick(photo) }
-            )
+        items(photos.size) { index ->
+            photos[index].let { photo ->
+                PhotoItem(
+                    photo = photo,
+                    onClick = { onClick(photo) }
+                )
+            }
         }
         if (isLoadingMore) {
-            item(span = { GridItemSpan(99) }) {
+            item {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -230,26 +232,47 @@ fun HistoryGrid(
     onDelete: (Long) -> Unit
 ) {
 
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(120.dp),
-        contentPadding = PaddingValues(8.dp)
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Adaptive(120.dp),
+        contentPadding = PaddingValues(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalItemSpacing = 18.dp
     ) {
 
-        items(photos) { photo ->
+        items(photos.size) { index ->
+            photos[index].let { photo ->
 
-            Box {
-                PhotoItem(
-                    photo = photo,
-                    onClick = { onClick(photo) }
-                )
+                Box {
+                    PhotoItem(
+                        photo = photo,
+                        onClick = { onClick(photo) }
+                    )
 
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .clickable { onDelete(photo.id) }
-                )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .align(Alignment.TopCenter)
+                            .background(
+                                Brush.verticalGradient(
+                                    colors = listOf(
+                                        Color.Black.copy(alpha = 0.6f),
+                                        Color.Black.copy(alpha = 0.3f),
+                                        Color.Transparent
+                                    )
+                                )
+                            )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(20.dp)
+                                .align(Alignment.TopEnd)
+                                .clickable { onDelete(photo.id) }
+                        )
+                    }
+                }
             }
         }
     }

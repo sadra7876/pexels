@@ -4,11 +4,10 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -38,7 +37,7 @@ fun PhotosScreen(
 ) {
 
     val photos = viewModel.photos.collectAsLazyPagingItems()
-    val gridState = rememberLazyGridState()
+    val gridState = rememberLazyStaggeredGridState()
     val isDark by viewModel.isDarkMode.collectAsState(initial = false)
 
     Scaffold(
@@ -56,7 +55,8 @@ fun PhotosScreen(
             photos = photos,
             gridState = gridState,
             onClick = onNavigateToDetail,
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(padding),
+            ontToggleFavorite = viewModel::toggleFavorite
         )
     }
 }
@@ -65,9 +65,10 @@ fun PhotosScreen(
 @Composable
 fun PhotosGrid(
     photos: LazyPagingItems<PhotoDN>,
-    gridState: LazyGridState,
+    gridState: LazyStaggeredGridState,
     onClick: (Long) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    ontToggleFavorite: (PhotoDN) -> Unit
 ) {
 
     val loadState = photos.loadState
@@ -82,26 +83,27 @@ fun PhotosGrid(
         return
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 120.dp),
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Adaptive(120.dp),
         state = gridState,
         modifier = modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalItemSpacing = 18.dp
     ) {
 
         items(photos.itemCount) { index ->
             photos[index]?.let { photo ->
                 PhotoItem(
                     photo = photo,
-                    onClick = { onClick(photo.id) }
+                    onClick = { onClick(photo.id) },
+                    ontToggleFavorite = ontToggleFavorite
                 )
             }
         }
 
         if (loadState.append is LoadState.Loading) {
-            item(span = { GridItemSpan(99) }) {
+            item{
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -114,7 +116,7 @@ fun PhotosGrid(
         }
 
         if (loadState.append is LoadState.Error) {
-            item(span = { GridItemSpan(99) }) {
+            item {
                 Text("Error loading more...")
             }
         }
@@ -159,6 +161,7 @@ fun TopBar(
 private fun PhotoItem(
     photo: PhotoDN,
     onClick: () -> Unit,
+    ontToggleFavorite: (PhotoDN) -> Unit
 ) {
 
     val imageUrl = photo.src.medium
@@ -179,31 +182,35 @@ private fun PhotoItem(
             width = 600,
             height = 600
         )
-        if (photo.isFavorite){
-            Icon(
-                imageVector = Icons.Filled.Favorite,
-                contentDescription = "Favorite",
-                tint = Color.Red,
-                modifier = Modifier
-                    .padding(12.dp)
-                    .size(18.dp)
-                    .align(Alignment.BottomEnd)
-            )
-
-        }
 
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
                     Brush.verticalGradient(
-                        listOf(
+                        colors = listOf(
                             Color.Transparent,
-                            Color.Black.copy(alpha = 0.15f)
-                        )
+                            Color.Black.copy(alpha = 0.15f),
+                            Color.Black.copy(alpha = 0.7f)
+                        ),
+                        startY = 50f
                     )
                 )
+        ){
+
+        Icon(
+            imageVector = if (photo.isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+            contentDescription = "Favorite",
+            tint = if (photo.isFavorite) Color.Red else Color.White,
+            modifier = Modifier
+                .padding(12.dp)
+                .size(18.dp)
+                .align(Alignment.BottomStart)
+                .clickable {
+                    ontToggleFavorite(photo)
+                }
         )
+            }
     }
 }
 

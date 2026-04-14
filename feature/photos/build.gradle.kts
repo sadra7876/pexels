@@ -54,6 +54,7 @@ dependencies {
     implementation(projects.core.mapper)
     implementation(projects.core.sharedModel)
     implementation(projects.core.dataStore)
+    implementation(projects.feature.photoDetail)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

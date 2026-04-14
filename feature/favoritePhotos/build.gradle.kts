@@ -50,6 +50,7 @@ dependencies {
 
     implementation(projects.common.image.loader)
     implementation(projects.core.database)
+    implementation(projects.feature.photoDetail)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

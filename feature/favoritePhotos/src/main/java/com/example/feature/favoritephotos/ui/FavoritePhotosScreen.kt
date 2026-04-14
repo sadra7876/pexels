@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -48,7 +48,7 @@ fun FavoritePhotosScreen(
 ) {
 
     val favoritePhotos = viewModel.favoritePhotos.collectAsLazyPagingItems()
-    val gridState = rememberLazyGridState()
+    val gridState = rememberLazyStaggeredGridState()
 
     Box(modifier = Modifier.fillMaxSize()){
 
@@ -57,19 +57,36 @@ fun FavoritePhotosScreen(
             photos = favoritePhotos,
             gridState = gridState,
             onClick = onNavigateToDetail,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            ontToggleFavorite = viewModel::toggleFavorite
         )
 
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Back",
-            tint = Color.White,
+        Box(
             modifier = Modifier
-                .padding(16.dp)
-                .size(28.dp)
-                .align(Alignment.TopStart)
-                .clickable { onBackClick() }
-        )
+                .fillMaxWidth()
+                .height(100.dp)
+                .align(Alignment.TopCenter)
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Black.copy(alpha = 0.6f),
+                            Color.Black.copy(alpha = 0.3f),
+                            Color.Transparent
+                        )
+                    )
+                )
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = Color.White,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(28.dp)
+                    .align(Alignment.TopStart)
+                    .clickable { onBackClick() }
+            )
+        }
 
     }
 
@@ -79,9 +96,10 @@ fun FavoritePhotosScreen(
 @Composable
 fun FavoriteGrid(
     photos: LazyPagingItems<FavoritePhotoDN>,
-    gridState: LazyGridState,
+    gridState: LazyStaggeredGridState,
     onClick: (Long) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    ontToggleFavorite: (Long) -> Unit
 ) {
 
     val loadState = photos.loadState
@@ -96,26 +114,27 @@ fun FavoriteGrid(
         return
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 120.dp),
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Adaptive(120.dp),
         state = gridState,
         modifier = modifier,
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalItemSpacing = 18.dp
     ) {
 
         items(photos.itemCount) { index ->
             photos[index]?.let { photo ->
                 FavoriteItem(
                     photo = photo,
-                    onClick = { onClick(photo.id) }
+                    onClick = { onClick(photo.id) },
+                    ontToggleFavorite = ontToggleFavorite
                 )
             }
         }
 
         if (loadState.append is LoadState.Loading) {
-            item(span = { GridItemSpan(99) }) {
+            item {
                 Box(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
                     contentAlignment = Alignment.Center
@@ -130,7 +149,8 @@ fun FavoriteGrid(
 @Composable
 fun FavoriteItem(
     photo: FavoritePhotoDN,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    ontToggleFavorite: (Long) -> Unit
 ) {
 
     val imageUrl = photo.src.medium
@@ -155,24 +175,28 @@ fun FavoriteItem(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .align(Alignment.BottomCenter)
                 .background(
                     Brush.verticalGradient(
-                        listOf(
+                        colors = listOf(
                             Color.Transparent,
-                            Color.Black.copy(alpha = 0.5f)
-                        )
+                            Color.Black.copy(alpha = 0.15f),
+                            Color.Black.copy(alpha = 0.7f)
+                        ),
+                        startY = 50f
                     )
                 )
-        )
+        ) {
 
-        Text(
-            text = formatDate(photo.likedAt),
-            color = Color.White,
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(8.dp)
-        )
+            Text(
+                text = formatDate(photo.likedAt),
+                color = Color.White,
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(8.dp)
+            )
+        }
 
         Icon(
             imageVector = Icons.Filled.Favorite,
@@ -182,6 +206,9 @@ fun FavoriteItem(
                 .padding(8.dp)
                 .size(18.dp)
                 .align(Alignment.TopEnd)
+                .clickable {
+                    ontToggleFavorite(photo.id)
+                }
         )
     }
 }

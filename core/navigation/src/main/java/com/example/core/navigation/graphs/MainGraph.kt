@@ -35,8 +35,10 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         val factory = remember {
             PhotosViewModelFactory(
                 getPhotosUseCase = PhotosFeatureProvider.provideGetPhotosUseCase(context),
-                darkModeUseCase = PhotosFeatureProvider.provideUpdateDarkModeUseCase(context)
-                )
+                darkModeUseCase = PhotosFeatureProvider.provideUpdateDarkModeUseCase(context),
+                favoritePhotoUseCase = PhotoDetailFeatureProvider.provideFavoritePhotoUseCase(context)
+
+            )
         }
 
         PhotosScreen(
@@ -93,7 +95,10 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         val context = LocalContext.current
 
         val factory = remember {
-            FavoritePhotosViewModelFactory(FavoritePhotosFeatureProvider.provide(context))
+            FavoritePhotosViewModelFactory(
+                getFavoritePhotosUseCase = FavoritePhotosFeatureProvider.provide(context),
+                favoritePhotoUseCase = PhotoDetailFeatureProvider.provideFavoritePhotoUseCase(context)
+            )
         }
 
         FavoritePhotosScreen(
