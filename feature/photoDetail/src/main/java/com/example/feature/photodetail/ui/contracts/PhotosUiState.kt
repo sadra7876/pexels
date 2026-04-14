@@ -1,6 +1,7 @@
 package com.example.feature.photodetail.ui.contracts
 
-import com.example.feature.photodetail.domain.models.PhotoDN
+import com.example.core.sharedmodel.dn.PhotoDN
+
 
 sealed class PhotoDetailUiState {
     data object Loading : PhotoDetailUiState()

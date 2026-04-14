@@ -5,8 +5,8 @@ import com.example.core.database.dao.FavoriteDao
 import com.example.core.database.dao.PhotoDao
 import com.example.core.database.entities.FavoritePhotoEntity
 import com.example.core.mapper.toPhotoEntity
+import com.example.core.sharedmodel.dn.PhotoDN
 import com.example.feature.photodetail.data.mapper.toPhotoDN
-import com.example.feature.photodetail.domain.models.PhotoDN
 import com.example.feature.photodetail.domain.repository.PhotoDetailRepository
 import com.example.network.networkCalls.photo.PhotosRemoteDataSource
 import kotlinx.coroutines.async

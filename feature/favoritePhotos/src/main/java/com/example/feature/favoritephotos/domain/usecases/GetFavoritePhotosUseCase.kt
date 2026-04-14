@@ -1,10 +1,10 @@
 package com.example.feature.favoritephotos.domain.usecases
 
 import androidx.paging.PagingData
-import com.example.feature.favoritephotos.domain.models.FavoritePhotoListDN
+import com.example.feature.favoritephotos.domain.models.FavoritePhotoDN
 import kotlinx.coroutines.flow.Flow
 
 interface GetFavoritePhotosUseCase {
-    operator fun invoke(): Flow<PagingData<FavoritePhotoListDN>>
+    operator fun invoke(): Flow<PagingData<FavoritePhotoDN>>
 
 }

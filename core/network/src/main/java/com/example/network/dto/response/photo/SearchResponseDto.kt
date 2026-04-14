@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SearchResponseDto(
-    val photos: List<PhotoListResponseDto>
+    val photos: List<PhotoResponseDto>
 )

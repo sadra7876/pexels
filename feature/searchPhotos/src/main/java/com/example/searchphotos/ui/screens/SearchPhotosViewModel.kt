@@ -2,7 +2,9 @@ package com.example.searchphotos.ui.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.searchphotos.domain.usecases.SearchPhotosUseCase
+import com.example.core.sharedmodel.dn.PhotoDN
+import com.example.searchphotos.domain.usecases.api.SearchHistoryUseCase
+import com.example.searchphotos.domain.usecases.api.SearchPhotosUseCase
 import com.example.searchphotos.ui.contracts.SearchPhotosUiState
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,11 +13,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.String
 
 
 class SearchPhotosViewModel(
-    private val searchPhotosUseCase : SearchPhotosUseCase
+    private val searchPhotosUseCase : SearchPhotosUseCase,
+    private val searchHistoryUseCase : SearchHistoryUseCase
 ) : ViewModel() {
 
     private val queryFlow = MutableStateFlow("")
@@ -24,14 +29,37 @@ class SearchPhotosViewModel(
     val uiState = _uiState.asStateFlow()
 
     init {
+        viewModelScope.launch {
+            searchHistoryUseCase.getSearchHistory().collect{ history ->
+                _uiState.update {
+                    it.copy( history = history )
+                }
+            }
+        }
         observeQuery()
+    }
+
+    fun onPhotoClicked(photo: PhotoDN) {
+        viewModelScope.launch {
+            searchHistoryUseCase.addToHistory(photo)
+        }
+    }
+
+    fun deleteHistoryItem(photoId: Long) {
+        viewModelScope.launch {
+            searchHistoryUseCase.deleteFromHistory(photoId)
+        }
+    }
+
+    fun clearHistory() {
+        viewModelScope.launch {
+            searchHistoryUseCase.clearHistory()
+        }
     }
 
     fun onQueryChange(query: String) {
         queryFlow.value = query
-        _uiState.value = SearchPhotosUiState(
-            query = query,
-        )
+        _uiState.value = _uiState.value.copy(query = query)
     }
 
     @OptIn(FlowPreview::class)
@@ -44,7 +72,15 @@ class SearchPhotosViewModel(
                 .collectLatest { query ->
 
                     if (query.isBlank()) {
-                        _uiState.value = SearchPhotosUiState()
+                        _uiState.value = _uiState.value.copy(
+                            query = "",
+                            photos = emptyList(),
+                            isLoading = false,
+                            isLoadingMore = false,
+                            page = 1,
+                            hasNextPage = true,
+                            error = null,
+                        )
                         return@collectLatest
                     }
 

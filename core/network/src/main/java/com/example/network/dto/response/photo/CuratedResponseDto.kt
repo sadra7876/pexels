@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CuratedResponseDto(
-        val photos: List<PhotoListResponseDto>
+        val photos: List<PhotoResponseDto>
 )

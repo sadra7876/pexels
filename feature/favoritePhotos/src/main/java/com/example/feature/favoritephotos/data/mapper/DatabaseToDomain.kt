@@ -2,11 +2,11 @@ package com.example.feature.favoritephotos.data.mapper
 
 import com.example.core.database.entities.dbo.PhotoSrcDbo
 import com.example.core.database.relations.FavoritePhotoWithDetails
-import com.example.feature.favoritephotos.domain.models.FavoritePhotoListDN
+import com.example.feature.favoritephotos.domain.models.FavoritePhotoDN
 import com.example.feature.favoritephotos.domain.models.FavoritePhotoListSrcDN
 
-fun FavoritePhotoWithDetails.toFavoritePhotoListDN() : FavoritePhotoListDN {
-    return FavoritePhotoListDN(
+fun FavoritePhotoWithDetails.toFavoritePhotoDN() : FavoritePhotoDN {
+    return FavoritePhotoDN(
         id = photo.id,
         width = photo.width,
         height = photo.height,

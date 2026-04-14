@@ -1,9 +1,9 @@
 package com.example.feature.photos.domain.repository
 
 import androidx.paging.PagingData
-import com.example.feature.photos.domain.models.PhotoListDN
+import com.example.core.sharedmodel.dn.PhotoDN
 import kotlinx.coroutines.flow.Flow
 
 interface PhotosRepository {
-    fun getPhotos(): Flow<PagingData<PhotoListDN>>
+    fun getPhotos(): Flow<PagingData<PhotoDN>>
 }

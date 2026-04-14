@@ -34,7 +34,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.example.common.loader.loaders.PexelImageLoader
-import com.example.feature.photodetail.domain.models.PhotoDN
 import com.example.feature.photodetail.ui.contracts.PhotoDetailUiState
 import androidx.core.graphics.toColorInt
 

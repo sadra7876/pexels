@@ -1,25 +1,18 @@
 package com.example.feature.photos.data.mapper
 
-import com.example.core.database.entities.dbo.PhotoSrcDbo
 import com.example.core.database.relations.PhotoWithFavorite
-import com.example.feature.photos.domain.models.PhotoListDN
-import com.example.feature.photos.domain.models.PhotoListSrcDN
+import com.example.core.mapper.toPhotoSrcDN
+import com.example.core.sharedmodel.dn.PhotoDN
 
-fun PhotoSrcDbo.toPhotoListSrcDN() : PhotoListSrcDN {
-    return PhotoListSrcDN(
-        original = original,
-        medium = medium,
-        small = small,
-        tiny = tiny
-    )
-}
-
-fun PhotoWithFavorite.toPhotoListDN() : PhotoListDN {
-    return PhotoListDN(
+fun PhotoWithFavorite.toPhotoDN() : PhotoDN {
+    return PhotoDN(
         id = photo.id,
         width = photo.width,
         height = photo.height,
-        src = photo.src.toPhotoListSrcDN(),
-        isFavorite = isFavorite
+        src = photo.src.toPhotoSrcDN(),
+        isFavorite = isFavorite,
+        avgColor = photo.avgColor,
+        photographer = photo.photographer,
+        alt = photo.alt
     )
 }

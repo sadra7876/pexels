@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,13 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.common.loader.loaders.PexelImageLoader
-import com.example.feature.photos.domain.models.PhotoListDN
+import com.example.core.sharedmodel.dn.PhotoDN
 
 @Composable
 fun PhotosScreen(
@@ -61,7 +59,7 @@ fun PhotosScreen(
 
 @Composable
 fun PhotosGrid(
-    photos: LazyPagingItems<PhotoListDN>,
+    photos: LazyPagingItems<PhotoDN>,
     gridState: LazyGridState,
     onClick: (Long) -> Unit,
     modifier: Modifier
@@ -146,7 +144,7 @@ fun TopBar(
 
 @Composable
 private fun PhotoItem(
-    photo: PhotoListDN,
+    photo: PhotoDN,
     onClick: () -> Unit,
 ) {
 

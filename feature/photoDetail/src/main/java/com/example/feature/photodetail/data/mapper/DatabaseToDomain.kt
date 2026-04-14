@@ -1,17 +1,9 @@
 package com.example.feature.photodetail.data.mapper
 
-import com.example.core.database.entities.dbo.PhotoSrcDbo
 import com.example.core.database.relations.PhotoWithFavorite
-import com.example.feature.photodetail.domain.models.PhotoDN
-import com.example.feature.photodetail.domain.models.PhotoSrcDN
+import com.example.core.mapper.toPhotoSrcDN
+import com.example.core.sharedmodel.dn.PhotoDN
 
-fun PhotoSrcDbo.toPhotoSrcDN() : PhotoSrcDN {
-    return PhotoSrcDN(
-        original = original,
-        medium = medium,
-        large = large
-    )
-}
 
 fun PhotoWithFavorite.toPhotoDN() : PhotoDN {
     return PhotoDN(

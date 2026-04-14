@@ -40,6 +40,7 @@ dependencies {
 
     implementation(projects.core.database)
     implementation(projects.core.network)
+    implementation(projects.core.sharedModel)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

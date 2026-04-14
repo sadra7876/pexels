@@ -1,6 +1,6 @@
 package com.example.feature.photodetail.domain.repository
 
-import com.example.feature.photodetail.domain.models.PhotoDN
+import com.example.core.sharedmodel.dn.PhotoDN
 import kotlinx.coroutines.flow.Flow
 
 interface PhotoDetailRepository {

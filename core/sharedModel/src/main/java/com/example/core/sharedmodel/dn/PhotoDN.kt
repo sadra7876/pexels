@@ -1,4 +1,4 @@
-package com.example.feature.photodetail.domain.models
+package com.example.core.sharedmodel.dn
 
 data class PhotoDN (
     val id: Long,

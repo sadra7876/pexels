@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -40,17 +41,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.example.common.loader.loaders.PexelImageLoader
-import com.example.searchphotos.domain.models.SearchPhotoDN
+import com.example.core.sharedmodel.dn.PhotoDN
+import kotlin.collections.lastIndex
 
 @Composable
 fun SearchPhotosScreen(
     viewModel: SearchPhotosViewModel,
     onBackClick: () -> Unit,
-    onPhotoClick: (Long) -> Unit
+    onNavigateToDetail: (Long) -> Unit
 ) {
 
     val state by viewModel.uiState.collectAsState()
     val gridState = rememberLazyGridState()
+
+    fun onPhotoClick(photo: PhotoDN) {
+        viewModel.onPhotoClicked(photo)
+        onNavigateToDetail(photo.id)
+    }
 
     LaunchedEffect(gridState) {
         snapshotFlow {
@@ -71,13 +78,27 @@ fun SearchPhotosScreen(
         )
 
         when {
+            state.query.isEmpty() && state.history.isNotEmpty() -> {
+                Column {
+                    HistoryHeader(
+                        onClearClick = viewModel::clearHistory
+                    )
+
+                    HistoryGrid(
+                        photos = state.history,
+                        onClick = ::onPhotoClick,
+                        onDelete = viewModel::deleteHistoryItem
+                    )
+                }
+            }
+
             state.isLoading -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
 
-            state.photos.isEmpty() -> {
+            state.photos.isEmpty() && state.history.isEmpty() -> {
                 EmptyState("No results")
             }
 
@@ -86,11 +107,37 @@ fun SearchPhotosScreen(
                     photos = state.photos,
                     gridState = gridState,
                     isLoadingMore = state.isLoadingMore,
-                    onClick = onPhotoClick
+                    onClick = ::onPhotoClick
                 )
             }
         }
 
+    }
+}
+
+@Composable
+fun HistoryHeader(
+    onClearClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+
+        Text(
+            text = "Recent searches",
+        )
+
+        Text(
+            text = "Clear",
+            color = Color.Red,
+            modifier = Modifier
+                .clickable { onClearClick() }
+                .padding(8.dp)
+        )
     }
 }
 
@@ -131,10 +178,10 @@ fun SearchTopBar(
 
 @Composable
 fun SearchGrid(
-    photos: List<SearchPhotoDN>,
+    photos: List<PhotoDN>,
     gridState: LazyGridState,
     isLoadingMore: Boolean,
-    onClick: (Long) -> Unit
+    onClick: (PhotoDN) -> Unit
 ) {
 
     LazyVerticalGrid(
@@ -148,7 +195,7 @@ fun SearchGrid(
         items(photos) { photo ->
             PhotoItem(
                 photo = photo,
-                onClick = { onClick(photo.id) }
+                onClick = { onClick(photo) }
             )
         }
         if (isLoadingMore) {
@@ -176,10 +223,42 @@ fun EmptyState(text: String) {
     }
 }
 
+@Composable
+fun HistoryGrid(
+    photos: List<PhotoDN>,
+    onClick: (PhotoDN) -> Unit,
+    onDelete: (Long) -> Unit
+) {
+
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(120.dp),
+        contentPadding = PaddingValues(8.dp)
+    ) {
+
+        items(photos) { photo ->
+
+            Box {
+                PhotoItem(
+                    photo = photo,
+                    onClick = { onClick(photo) }
+                )
+
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .clickable { onDelete(photo.id) }
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 private fun PhotoItem(
-    photo: SearchPhotoDN,
+    photo: PhotoDN,
     onClick: () -> Unit,
 ) {
 

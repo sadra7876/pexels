@@ -70,14 +70,19 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
     }
 
     composable("SearchPhotosScreen") { backStack ->
+        val context = LocalContext.current
+
         val factory = remember {
-            SearchPhotosViewModelFactory(SearchPhotosFeatureProvider.searchPhotosUseCase)
+            SearchPhotosViewModelFactory(
+                searchPhotosUseCase = SearchPhotosFeatureProvider.provideSearchPhotosUseCase(context),
+                searchHistoryUseCase = SearchPhotosFeatureProvider.provideSearchHistoryUseCase(context)
+                )
         }
 
         SearchPhotosScreen(
             viewModel = backStack.screenViewModel(navController, factory),
             onBackClick = navController::popBackStack,
-            onPhotoClick = { navController.navigate("PhotoDetailScreen/${it}")},
+            onNavigateToDetail = { navController.navigate("PhotoDetailScreen/${it}")},
             )
     }
 

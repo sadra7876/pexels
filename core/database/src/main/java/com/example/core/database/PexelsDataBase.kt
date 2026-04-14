@@ -6,19 +6,22 @@ import androidx.room.TypeConverters
 import com.example.core.database.dao.FavoriteDao
 import com.example.core.database.dao.PhotoDao
 import com.example.core.database.dao.RemoteKeysDao
+import com.example.core.database.dao.SearchHistoryDao
 import com.example.core.database.dao.TransactionRunnerDao
 import com.example.core.database.entities.FavoritePhotoEntity
 import com.example.core.database.entities.PhotoEntity
 import com.example.core.database.entities.RemoteKeys
+import com.example.core.database.entities.SearchHistoryEntity
 import com.example.core.database.utils.Converters
 
 @Database(
     entities = [
         PhotoEntity::class,
         RemoteKeys::class,
-        FavoritePhotoEntity::class
+        FavoritePhotoEntity::class,
+        SearchHistoryEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -27,4 +30,5 @@ abstract class PexelsDataBase : RoomDatabase() {
     abstract fun remoteKeysDao(): RemoteKeysDao
     abstract fun favoriteDao(): FavoriteDao
     abstract fun transactionRunnerDao(): TransactionRunnerDao
+    abstract fun searchHistoryDao(): SearchHistoryDao
 }

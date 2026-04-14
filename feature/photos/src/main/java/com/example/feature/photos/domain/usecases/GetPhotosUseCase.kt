@@ -1,9 +1,9 @@
 package com.example.feature.photos.domain.usecases
 
 import androidx.paging.PagingData
-import com.example.feature.photos.domain.models.PhotoListDN
+import com.example.core.sharedmodel.dn.PhotoDN
 import kotlinx.coroutines.flow.Flow
 
 interface GetPhotosUseCase {
-    operator fun invoke(): Flow<PagingData<PhotoListDN>>
+    operator fun invoke(): Flow<PagingData<PhotoDN>>
 }

@@ -38,7 +38,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.common.loader.loaders.PexelImageLoader
-import com.example.feature.favoritephotos.domain.models.FavoritePhotoListDN
+import com.example.feature.favoritephotos.domain.models.FavoritePhotoDN
 
 @Composable
 fun FavoritePhotosScreen(
@@ -78,7 +78,7 @@ fun FavoritePhotosScreen(
 
 @Composable
 fun FavoriteGrid(
-    photos: LazyPagingItems<FavoritePhotoListDN>,
+    photos: LazyPagingItems<FavoritePhotoDN>,
     gridState: LazyGridState,
     onClick: (Long) -> Unit,
     modifier: Modifier
@@ -129,7 +129,7 @@ fun FavoriteGrid(
 
 @Composable
 fun FavoriteItem(
-    photo: FavoritePhotoListDN,
+    photo: FavoritePhotoDN,
     onClick: () -> Unit
 ) {
 

@@ -9,11 +9,10 @@ import androidx.paging.map
 import com.example.core.database.dao.PhotoDao
 import com.example.core.database.dao.RemoteKeysDao
 import com.example.core.database.dao.TransactionRunnerDao
-import com.example.feature.photos.data.mapper.toPhotoListDN
+import com.example.core.sharedmodel.dn.PhotoDN
+import com.example.feature.photos.data.mapper.toPhotoDN
 import com.example.feature.photos.data.mediator.PhotoRemoteMediator
 import com.example.network.networkCalls.photo.PhotosRemoteDataSource
-import com.example.feature.photos.domain.models.PhotoListDN
-import com.example.feature.photos.domain.models.PhotoListSrcDN
 import com.example.feature.photos.domain.repository.PhotosRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,7 +24,7 @@ internal class PhotosRepositoryImpl(
     private val transactionRunner: TransactionRunnerDao,
     ): PhotosRepository {
     @OptIn(ExperimentalPagingApi::class)
-    override fun getPhotos(): Flow<PagingData<PhotoListDN>> {
+    override fun getPhotos(): Flow<PagingData<PhotoDN>> {
         return Pager(
             config = PagingConfig(
                 pageSize = 30,
@@ -43,7 +42,7 @@ internal class PhotosRepositoryImpl(
         ).flow
             .map { pagingData ->
                 pagingData.map { entity ->
-                    entity.toPhotoListDN()
+                    entity.toPhotoDN()
                 }
             }
     }

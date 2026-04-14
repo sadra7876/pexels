@@ -1,6 +1,6 @@
 package com.example.feature.favoritephotos.domain.models
 
-data class FavoritePhotoListDN (
+data class FavoritePhotoDN (
     val id: Long,
     val width: Int,
     val height: Int,

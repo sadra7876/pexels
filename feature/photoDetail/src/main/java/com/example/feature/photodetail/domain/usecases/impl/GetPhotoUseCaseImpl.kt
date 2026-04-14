@@ -1,6 +1,6 @@
 package com.example.feature.photodetail.domain.usecases.impl
 
-import com.example.feature.photodetail.domain.models.PhotoDN
+import com.example.core.sharedmodel.dn.PhotoDN
 import com.example.feature.photodetail.domain.repository.PhotoDetailRepository
 import com.example.feature.photodetail.domain.usecases.api.GetPhotoUseCase
 import kotlinx.coroutines.Dispatchers

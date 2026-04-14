@@ -51,7 +51,7 @@ dependencies {
     implementation(projects.common.image.loader)
     implementation(projects.core.database)
     implementation(projects.core.mapper)
-
+    implementation(projects.core.sharedModel)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
