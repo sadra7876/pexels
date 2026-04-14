@@ -9,6 +9,7 @@ import androidx.paging.map
 import com.example.core.database.dao.PhotoDao
 import com.example.core.database.dao.RemoteKeysDao
 import com.example.core.database.dao.TransactionRunnerDao
+import com.example.core.datastore.settings.AppSetting
 import com.example.core.sharedmodel.dn.PhotoDN
 import com.example.feature.photos.data.mapper.toPhotoDN
 import com.example.feature.photos.data.mediator.PhotoRemoteMediator
@@ -22,6 +23,7 @@ internal class PhotosRepositoryImpl(
     private val remoteKeysDao: RemoteKeysDao,
     private val photoDao: PhotoDao,
     private val transactionRunner: TransactionRunnerDao,
+    private val appSetting: AppSetting
     ): PhotosRepository {
     @OptIn(ExperimentalPagingApi::class)
     override fun getPhotos(): Flow<PagingData<PhotoDN>> {
@@ -45,5 +47,13 @@ internal class PhotosRepositoryImpl(
                     entity.toPhotoDN()
                 }
             }
+    }
+
+    override suspend fun updateDarkMode(toDark: Boolean) {
+        appSetting.updateDarkMode(toDark)
+    }
+
+    override fun getDarkMode(): Flow<Boolean> {
+        return appSetting.getDarkMode()
     }
 }

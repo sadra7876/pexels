@@ -62,6 +62,7 @@ dependencies {
 
     implementation(projects.core.navigation)
     implementation(projects.common.image.loader)
+    implementation(projects.core.dataStore)
 
 
 }

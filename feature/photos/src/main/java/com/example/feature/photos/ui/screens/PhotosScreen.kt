@@ -1,5 +1,6 @@
 package com.example.feature.photos.ui.screens
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -37,10 +39,13 @@ fun PhotosScreen(
 
     val photos = viewModel.photos.collectAsLazyPagingItems()
     val gridState = rememberLazyGridState()
+    val isDark by viewModel.isDarkMode.collectAsState(initial = false)
 
     Scaffold(
         topBar = {
             TopBar(
+                isDark = isDark,
+                onToggleTheme = viewModel::updateDarkMode,
                 onSearchClick = onNavigateToSearch,
                 onFavoritesClick = onNavigateToFavorite
             )
@@ -119,12 +124,20 @@ fun PhotosGrid(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
+    isDark: Boolean,
+    onToggleTheme: (Boolean) -> Unit,
     onSearchClick: () -> Unit,
     onFavoritesClick: () -> Unit
 ) {
     TopAppBar(
         title = { Text("Photos") },
         actions = {
+
+            AnimatedThemeSwitch(
+                isDark = isDark,
+                onToggleTheme = onToggleTheme
+            )
+
             IconButton(onClick = onSearchClick) {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -190,6 +203,34 @@ private fun PhotoItem(
                         )
                     )
                 )
+        )
+    }
+}
+
+@Composable
+fun AnimatedThemeSwitch(
+    isDark: Boolean,
+    onToggleTheme: (Boolean) -> Unit
+) {
+    val backgroundColor by animateColorAsState(
+        targetValue = if (isDark) Color(0xFF1E1E1E) else Color(0xFFFFF3E0)
+    )
+
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(backgroundColor)
+            .padding(horizontal = 12.dp, vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(if (isDark) "🌙" else "☀️")
+
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Switch(
+            checked = isDark,
+            onCheckedChange = onToggleTheme
         )
     }
 }

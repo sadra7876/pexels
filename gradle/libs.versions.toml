@@ -22,6 +22,7 @@ paging = "3.3.6"
 pagingCompose = "3.3.6"
 ksp = "2.0.20-1.0.25"
 jetbrainsKotlinJvm = "2.0.21"
+datastore = "1.1.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,6 +59,7 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "pagingCompose" }
 androidx-paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

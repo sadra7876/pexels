@@ -1,4 +1,4 @@
-package com.example.feature.photos.domain.usecases
+package com.example.feature.photos.domain.usecases.api
 
 import androidx.paging.PagingData
 import com.example.core.sharedmodel.dn.PhotoDN

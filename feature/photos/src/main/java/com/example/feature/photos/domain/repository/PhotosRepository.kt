@@ -6,4 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface PhotosRepository {
     fun getPhotos(): Flow<PagingData<PhotoDN>>
+
+    suspend fun updateDarkMode(toDark: Boolean)
+
+    fun getDarkMode(): Flow<Boolean>
 }

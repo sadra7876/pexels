@@ -10,11 +10,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.common.loader.loaders.LocalImageLoader
 import com.example.common.loader.loaders.PexelImageLoaderProvider
+import com.example.core.datastore.di.DataStoreProvider
 import com.example.core.navigation.navHost.NavHostContent
 import com.example.pexels.ui.theme.PexelsTheme
 
@@ -23,11 +26,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         val imageLoaderProvider = PexelImageLoaderProvider(this)
+        val appSetting = DataStoreProvider.provideAppSetting(this)
         setContent {
             CompositionLocalProvider(
                 LocalImageLoader provides imageLoaderProvider
             ) {
-                PexelsTheme {
+                val isDark by appSetting
+                    .getDarkMode()
+                    .collectAsState(initial = false)
+
+                PexelsTheme(
+                    darkTheme = isDark
+                ) {
                     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                         NavHostContent(
                             modifier = Modifier.padding(innerPadding),

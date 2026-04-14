@@ -33,7 +33,10 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         val context = LocalContext.current
 
         val factory = remember {
-            PhotosViewModelFactory(PhotosFeatureProvider.provide(context))
+            PhotosViewModelFactory(
+                getPhotosUseCase = PhotosFeatureProvider.provideGetPhotosUseCase(context),
+                darkModeUseCase = PhotosFeatureProvider.provideUpdateDarkModeUseCase(context)
+                )
         }
 
         PhotosScreen(
