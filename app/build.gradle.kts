@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.material3)
 
     implementation(libs.navigation.compose)
+    implementation(libs.androidx.work.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -63,6 +64,7 @@ dependencies {
     implementation(projects.core.navigation)
     implementation(projects.common.image.loader)
     implementation(projects.core.dataStore)
+    implementation(projects.core.worker)
 
 
 }
