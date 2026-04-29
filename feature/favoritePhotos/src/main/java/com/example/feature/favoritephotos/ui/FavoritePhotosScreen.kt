@@ -104,16 +104,6 @@ fun FavoriteGrid(
 
     val loadState = photos.loadState
 
-    if (loadState.refresh is LoadState.Loading) {
-        Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-        return
-    }
-
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Adaptive(120.dp),
         state = gridState,
