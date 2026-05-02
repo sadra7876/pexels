@@ -11,8 +11,9 @@ import com.example.searchphotos.data.mapper.toPhotoDN
 import com.example.searchphotos.domain.repository.SearchPhotoRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-internal class SearchPhotoRepositoryImpl(
+internal class SearchPhotoRepositoryImpl @Inject constructor(
     private val photosRemoteDataSource: PhotosRemoteDataSource,
     private val searchHistoryDao: SearchHistoryDao,
     private val photoDao: PhotoDao

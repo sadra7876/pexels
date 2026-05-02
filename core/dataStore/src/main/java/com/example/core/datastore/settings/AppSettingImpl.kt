@@ -2,8 +2,9 @@ package com.example.core.datastore.settings
 
 import com.example.core.datastore.api.DataStoreManager
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-internal class AppSettingImpl(
+internal class AppSettingImpl @Inject constructor(
     private val dataStoreManager : DataStoreManager
 ) : AppSetting {
 

@@ -5,11 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.feature.photodetail.domain.usecases.api.FavoritePhotoUseCase
 import com.example.feature.photodetail.domain.usecases.api.GetPhotoUseCase
 import com.example.feature.photodetail.ui.contracts.PhotoDetailUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PhotoDetailViewModel(
+@HiltViewModel
+class PhotoDetailViewModel @Inject constructor(
     private val getPhotoUseCase: GetPhotoUseCase,
     private val favoritePhotoUseCase: FavoritePhotoUseCase
 ) : ViewModel() {

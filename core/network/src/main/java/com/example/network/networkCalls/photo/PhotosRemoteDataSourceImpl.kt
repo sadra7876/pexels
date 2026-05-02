@@ -6,8 +6,9 @@ import com.example.network.dto.response.photo.SearchResponseDto
 import com.example.network.endpoints.PhotosEndpoint
 import com.example.network.errorhandling.ApiExceptions
 import com.example.network.errorhandling.handler.SafeApiCaller
+import javax.inject.Inject
 
-internal class PhotosRemoteDataSourceImpl(
+internal class PhotosRemoteDataSourceImpl @Inject constructor(
     private val photosEndpoint: PhotosEndpoint,
     private val safeApiCaller: SafeApiCaller
 ): PhotosRemoteDataSource {

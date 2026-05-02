@@ -6,6 +6,7 @@ import com.example.core.sharedmodel.dn.PhotoDN
 import com.example.searchphotos.domain.usecases.api.SearchHistoryUseCase
 import com.example.searchphotos.domain.usecases.api.SearchPhotosUseCase
 import com.example.searchphotos.ui.contracts.SearchPhotosUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,10 +16,12 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.String
 
 
-class SearchPhotosViewModel(
+@HiltViewModel
+class SearchPhotosViewModel @Inject constructor(
     private val searchPhotosUseCase : SearchPhotosUseCase,
     private val searchHistoryUseCase : SearchHistoryUseCase
 ) : ViewModel() {

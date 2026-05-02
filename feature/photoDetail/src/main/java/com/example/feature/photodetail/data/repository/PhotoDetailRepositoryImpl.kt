@@ -14,10 +14,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.supervisorScope
+import javax.inject.Inject
 
 private val Tag = "PhotoDetailRepositoryImpl"
 
-internal class PhotoDetailRepositoryImpl(
+internal class PhotoDetailRepositoryImpl @Inject constructor(
     private val photosRemoteDataSource: PhotosRemoteDataSource,
     private val favoriteDao: FavoriteDao,
     private val photoDao: PhotoDao

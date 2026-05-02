@@ -8,11 +8,14 @@ import com.example.core.sharedmodel.dn.PhotoDN
 import com.example.feature.photodetail.domain.usecases.api.FavoritePhotoUseCase
 import com.example.feature.photos.domain.usecases.api.GetPhotosUseCase
 import com.example.feature.photos.domain.usecases.api.DarkModeUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
-class PhotosViewModel(
+@HiltViewModel
+class PhotosViewModel @Inject constructor(
     private val getPhotosUseCase: GetPhotosUseCase,
     private val darkModeUseCase: DarkModeUseCase,
     private val favoritePhotoUseCase: FavoritePhotoUseCase

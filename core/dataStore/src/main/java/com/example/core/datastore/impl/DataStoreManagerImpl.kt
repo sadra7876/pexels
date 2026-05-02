@@ -6,10 +6,15 @@ import androidx.datastore.preferences.core.edit
 import com.example.core.datastore.api.DataStoreManager
 import kotlinx.coroutines.flow.Flow
 import androidx.datastore.preferences.preferencesDataStore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-internal class DataStoreManagerImpl(
+@Singleton
+internal class DataStoreManagerImpl @Inject constructor(
+    @ApplicationContext
     context: Context
 ) : DataStoreManager {
 

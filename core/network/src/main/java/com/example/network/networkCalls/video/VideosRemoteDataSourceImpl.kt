@@ -5,8 +5,9 @@ import com.example.network.dto.response.video.PopularVideoResponseDto
 import com.example.network.endpoints.VideosEndPoint
 import com.example.network.errorhandling.ApiExceptions
 import com.example.network.errorhandling.handler.SafeApiCaller
+import javax.inject.Inject
 
-internal class VideosRemoteDataSourceImpl(
+internal class VideosRemoteDataSourceImpl @Inject constructor(
     private val videosEndpoint: VideosEndPoint,
     private val safeApiCaller: SafeApiCaller
 ): VideosRemoteDataSource {

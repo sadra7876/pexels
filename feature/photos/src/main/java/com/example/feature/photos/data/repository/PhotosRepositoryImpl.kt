@@ -4,7 +4,6 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import androidx.paging.map
 import com.example.core.database.dao.PhotoDao
 import com.example.core.database.dao.RemoteKeysDao
@@ -17,8 +16,9 @@ import com.example.network.networkCalls.photo.PhotosRemoteDataSource
 import com.example.feature.photos.domain.repository.PhotosRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-internal class PhotosRepositoryImpl(
+internal class PhotosRepositoryImpl @Inject constructor(
     private val photosRemoteDataSource: PhotosRemoteDataSource,
     private val remoteKeysDao: RemoteKeysDao,
     private val photoDao: PhotoDao,

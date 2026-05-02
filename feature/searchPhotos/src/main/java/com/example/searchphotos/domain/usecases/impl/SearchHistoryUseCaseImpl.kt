@@ -7,8 +7,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-internal class SearchHistoryUseCaseImpl(
+internal class SearchHistoryUseCaseImpl @Inject constructor(
     private val repository: SearchPhotoRepository
 ) : SearchHistoryUseCase {
     override fun getSearchHistory(): Flow<List<PhotoDN>> {
