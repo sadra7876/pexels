@@ -2,6 +2,7 @@ package com.example.network.di
 
 import com.example.network.errorhandling.handler.SafeApiCaller
 import com.example.network.errorhandling.handler.SafeApiCallerImpl
+import com.example.network.networkCalls.photo.HiltTestImpl
 import com.example.network.networkCalls.photo.PhotosRemoteDataSource
 import com.example.network.networkCalls.photo.PhotosRemoteDataSourceImpl
 import com.example.network.networkCalls.video.VideosRemoteDataSource
@@ -24,7 +25,7 @@ internal abstract class NetWorkCallModule {
 
     @Binds
     abstract fun providePhotosRemoteDataSource(
-        photosRemoteDataSourceImpl: PhotosRemoteDataSourceImpl
+        photosRemoteDataSourceImpl: HiltTestImpl
     ): PhotosRemoteDataSource
 
     @Binds
