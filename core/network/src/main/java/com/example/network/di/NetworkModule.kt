@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dagger.multibindings.IntoSet
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
@@ -21,6 +22,19 @@ import javax.inject.Singleton
 internal object NetworkModule {
     private const val baseUrl = "https://api.pexels.com/v1/"
 
+    @Provides
+    @Singleton
+    @IntoSet
+    fun provideHttpLoggingInterceptor(): Interceptor =
+        HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+    @Provides
+    @Singleton
+    @IntoSet
+    fun provideApiKeyInterceptor(): Interceptor = ApiKeyInterceptor()
+
     @OptIn(ExperimentalSerializationApi::class)
     @Provides
     @Singleton
@@ -35,14 +49,10 @@ internal object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
+        interceptors: Set<@JvmSuppressWildcards Interceptor>
     ): OkHttpClient = OkHttpClient.Builder()
         .callTimeout(30, TimeUnit.SECONDS)
-        .addInterceptor(ApiKeyInterceptor())
-        .addInterceptor(
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
-        )
+        .apply { interceptors.forEach(::addInterceptor) }
         .build()
 
     @Provides

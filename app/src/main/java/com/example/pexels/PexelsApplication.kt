@@ -19,6 +19,6 @@ class PexelsApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        scheduleSyncWork(this)
+//        scheduleSyncWork(this)
     }
 }
