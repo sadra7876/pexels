@@ -4,9 +4,8 @@ import android.util.Log
 import com.example.network.errorhandling.ApiExceptions
 import retrofit2.Response
 import java.net.SocketTimeoutException
-import javax.inject.Inject
 
-internal class SafeApiCallerImpl @Inject constructor() : SafeApiCaller {
+internal class SafeApiCallerImpl : SafeApiCaller {
     override suspend fun <T : Any> executeSafely(executor: suspend () -> Response<T>): T {
         return try {
             val response = executor()

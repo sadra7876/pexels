@@ -7,9 +7,8 @@ import com.example.feature.photos.domain.usecases.api.GetPhotosUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-internal class GetPhotosUseCaseImpl @Inject constructor(
+internal class GetPhotosUseCaseImpl(
     private val repository: PhotosRepository
 ) : GetPhotosUseCase {
     override fun invoke(): Flow<PagingData<PhotoDN>> =

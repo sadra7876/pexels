@@ -16,9 +16,8 @@ import com.example.network.networkCalls.photo.PhotosRemoteDataSource
 import com.example.feature.photos.domain.repository.PhotosRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-internal class PhotosRepositoryImpl @Inject constructor(
+internal class PhotosRepositoryImpl(
     private val photosRemoteDataSource: PhotosRemoteDataSource,
     private val remoteKeysDao: RemoteKeysDao,
     private val photoDao: PhotoDao,

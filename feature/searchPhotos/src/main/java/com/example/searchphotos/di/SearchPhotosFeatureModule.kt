@@ -6,21 +6,19 @@ import com.example.searchphotos.domain.usecases.api.SearchHistoryUseCase
 import com.example.searchphotos.domain.usecases.api.SearchPhotosUseCase
 import com.example.searchphotos.domain.usecases.impl.SearchHistoryUseCaseImpl
 import com.example.searchphotos.domain.usecases.impl.SearchPhotosUseCaseImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.example.searchphotos.ui.screens.SearchPhotosViewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class SearchPhotosFeatureModule {
+val searchPhotosFeatureModule = module {
 
-    @Binds
-    internal abstract fun bindSearchPhotosUseCase(useCase: SearchPhotosUseCaseImpl): SearchPhotosUseCase
+    singleOf(::SearchPhotosUseCaseImpl) { bind<SearchPhotosUseCase>() }
 
-    @Binds
-    internal abstract fun bindSearchHistoryUseCase (useCase: SearchHistoryUseCaseImpl): SearchHistoryUseCase
+    singleOf(::SearchHistoryUseCaseImpl) { bind<SearchHistoryUseCase>() }
 
-    @Binds
-    internal abstract fun bindRepository(repository: SearchPhotoRepositoryImpl): SearchPhotoRepository
+    singleOf(::SearchPhotoRepositoryImpl) { bind<SearchPhotoRepository>() }
+
+    viewModelOf(::SearchPhotosViewModel)
 }

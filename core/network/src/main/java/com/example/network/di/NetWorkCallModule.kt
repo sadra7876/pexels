@@ -6,29 +6,15 @@ import com.example.network.networkCalls.photo.PhotosRemoteDataSource
 import com.example.network.networkCalls.photo.PhotosRemoteDataSourceImpl
 import com.example.network.networkCalls.video.VideosRemoteDataSource
 import com.example.network.networkCalls.video.VideosRemoteDataSourceImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class NetWorkCallModule {
+val networkCallModule = module {
 
-    @Binds
-    @Singleton
-    abstract fun provideSafeApiCaller (
-        safeApiCallerImpl: SafeApiCallerImpl
-    ): SafeApiCaller
+    singleOf(::SafeApiCallerImpl) { bind<SafeApiCaller>() }
 
-    @Binds
-    abstract fun providePhotosRemoteDataSource(
-        photosRemoteDataSourceImpl: PhotosRemoteDataSourceImpl
-    ): PhotosRemoteDataSource
+    singleOf(::PhotosRemoteDataSourceImpl) { bind<PhotosRemoteDataSource>() }
 
-    @Binds
-    abstract fun provideVideosRemoteDataSource(
-        videosRemoteDataSourceImpl: VideosRemoteDataSourceImpl
-    ): VideosRemoteDataSource
+    singleOf(::VideosRemoteDataSourceImpl) { bind<VideosRemoteDataSource>() }
 }

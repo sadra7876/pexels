@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -46,8 +45,8 @@ dependencies {
     implementation(libs.room.paging)
     implementation(libs.kotlinx.serialization.json)
     ksp(libs.room.compiler)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -4,7 +4,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
@@ -14,6 +13,7 @@ import com.example.feature.favoritephotos.ui.FavoritePhotosScreen
 import com.example.feature.photodetail.ui.screens.PhotoDetailScreen
 import com.example.feature.photos.ui.screens.PhotosScreen
 import com.example.searchphotos.ui.screens.SearchPhotosScreen
+import org.koin.androidx.compose.koinViewModel
 
 
 fun NavGraphBuilder.mainGraph(navController: NavController) {
@@ -67,18 +67,18 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
 private inline fun <reified T : ViewModel> NavBackStackEntry.screenViewModel(
     navController: NavController,
 ):T {
-    val navGraphRoute = destination.route ?: return hiltViewModel<T>()
+    val navGraphRoute = destination.route ?: return koinViewModel<T>()
     val screenEntry = remember(this){
         navController.getBackStackEntry(navGraphRoute)
     }
-    return hiltViewModel<T>( viewModelStoreOwner = screenEntry)
+    return koinViewModel<T>( viewModelStoreOwner = screenEntry)
 }
 
 @Composable
 private inline fun <reified T : ViewModel> NavBackStackEntry.graphViewModel(navController: NavController):T {
-    val navGraphRoute = destination.parent?.route ?: return hiltViewModel<T>()
+    val navGraphRoute = destination.parent?.route ?: return koinViewModel<T>()
     val graphEntry = remember(this) {
         navController.getBackStackEntry(navGraphRoute)
     }
-    return hiltViewModel<T>( viewModelStoreOwner = graphEntry)
+    return koinViewModel<T>( viewModelStoreOwner = graphEntry)
 }

@@ -6,21 +6,20 @@ import com.example.feature.photodetail.domain.usecases.api.FavoritePhotoUseCase
 import com.example.feature.photodetail.domain.usecases.api.GetPhotoUseCase
 import com.example.feature.photodetail.domain.usecases.impl.FavoritePhotoUseCaseImpl
 import com.example.feature.photodetail.domain.usecases.impl.GetPhotoUseCaseImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.example.feature.photodetail.ui.screens.PhotoDetailViewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class PhotoDetailFeatureModule {
+val photoDetailFeatureModule = module {
 
-    @Binds
-    internal abstract fun bindFavoritePhotoUseCase (useCase: FavoritePhotoUseCaseImpl): FavoritePhotoUseCase
+    singleOf(::FavoritePhotoUseCaseImpl) { bind<FavoritePhotoUseCase>() }
 
-    @Binds
-    internal abstract fun bindGetPhotoUseCase (useCase: GetPhotoUseCaseImpl): GetPhotoUseCase
+    singleOf(::GetPhotoUseCaseImpl) { bind<GetPhotoUseCase>() }
 
-    @Binds
-    internal abstract fun bindPhotosRepository(repository: PhotoDetailRepositoryImpl): PhotoDetailRepository
+    singleOf(::PhotoDetailRepositoryImpl) { bind<PhotoDetailRepository>() }
+
+    viewModelOf(::PhotoDetailViewModel)
+
 }

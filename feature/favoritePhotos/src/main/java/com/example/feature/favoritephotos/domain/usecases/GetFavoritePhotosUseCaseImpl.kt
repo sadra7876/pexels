@@ -6,9 +6,8 @@ import com.example.feature.favoritephotos.domain.repository.FavoritePhotosReposi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-internal class GetFavoritePhotosUseCaseImpl @Inject constructor (
+internal class GetFavoritePhotosUseCaseImpl (
     private val repository: FavoritePhotosRepository
 ) : GetFavoritePhotosUseCase {
     override fun invoke(): Flow<PagingData<FavoritePhotoDN>> =

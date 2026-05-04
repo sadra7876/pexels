@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -47,10 +45,8 @@ dependencies {
     implementation(projects.core.dataStore)
 
     implementation(libs.androidx.work.ktx)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.ext.work)
-    ksp(libs.hilt.ext.compiler)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

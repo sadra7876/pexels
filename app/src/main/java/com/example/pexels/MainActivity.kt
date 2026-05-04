@@ -20,17 +20,12 @@ import com.example.common.loader.loaders.PexelImageLoaderProvider
 import com.example.core.datastore.settings.AppSetting
 import com.example.core.navigation.navHost.NavHostContent
 import com.example.pexels.ui.theme.PexelsTheme
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var appSetting: AppSetting
-
-    @Inject
-    lateinit var imageLoaderProvider: PexelImageLoaderProvider
+    private val appSetting: AppSetting by inject()
+    private val imageLoaderProvider: PexelImageLoaderProvider by inject()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

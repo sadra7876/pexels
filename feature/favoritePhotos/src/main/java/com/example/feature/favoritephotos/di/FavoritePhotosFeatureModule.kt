@@ -4,18 +4,17 @@ import com.example.feature.favoritephotos.data.repository.FavoritePhotosReposito
 import com.example.feature.favoritephotos.domain.repository.FavoritePhotosRepository
 import com.example.feature.favoritephotos.domain.usecases.GetFavoritePhotosUseCase
 import com.example.feature.favoritephotos.domain.usecases.GetFavoritePhotosUseCaseImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.example.feature.favoritephotos.ui.FavoritePhotosViewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class FavoritePhotosFeatureModule {
+val favoritePhotosFeatureModule = module {
 
-    @Binds
-    internal abstract fun bindGetFavoritePhotosUseCase(useCase: GetFavoritePhotosUseCaseImpl): GetFavoritePhotosUseCase
+    singleOf(::GetFavoritePhotosUseCaseImpl) { bind<GetFavoritePhotosUseCase>() }
 
-    @Binds
-    internal abstract fun bindFavoritePhotosRepository(repository: FavoritePhotosRepositoryImpl): FavoritePhotosRepository
+    singleOf(::FavoritePhotosRepositoryImpl) { bind<FavoritePhotosRepository>() }
+
+    viewModelOf(::FavoritePhotosViewModel)
 }

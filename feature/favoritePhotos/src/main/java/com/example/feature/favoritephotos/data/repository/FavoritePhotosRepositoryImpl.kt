@@ -10,9 +10,8 @@ import com.example.feature.favoritephotos.domain.models.FavoritePhotoDN
 import com.example.feature.favoritephotos.domain.repository.FavoritePhotosRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-internal class FavoritePhotosRepositoryImpl @Inject constructor(
+internal class FavoritePhotosRepositoryImpl(
     private val favoriteDao: FavoriteDao
 ) : FavoritePhotosRepository {
     override fun getFavoritePhotos(): Flow<PagingData<FavoritePhotoDN>> {

@@ -5,9 +5,8 @@ import com.example.searchphotos.domain.repository.SearchPhotoRepository
 import com.example.searchphotos.domain.usecases.api.SearchPhotosUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class SearchPhotosUseCaseImpl @Inject constructor(
+class SearchPhotosUseCaseImpl(
     private val repository: SearchPhotoRepository
 ) : SearchPhotosUseCase {
     override suspend fun invoke(query: String, page: Int, perPage: Int): List<PhotoDN> {

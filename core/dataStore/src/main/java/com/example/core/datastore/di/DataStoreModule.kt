@@ -4,24 +4,12 @@ import com.example.core.datastore.api.DataStoreManager
 import com.example.core.datastore.impl.DataStoreManagerImpl
 import com.example.core.datastore.settings.AppSetting
 import com.example.core.datastore.settings.AppSettingImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class DataStoreModule {
+val dataStoreModule = module {
 
-    @Binds
-    abstract fun provideAppSetting(
-        appSettingImpl: AppSettingImpl
-    ): AppSetting
-
-    @Binds
-    abstract fun bindDataStoreManager(
-        dataStoreManager: DataStoreManagerImpl
-    ): DataStoreManager
-
+    singleOf(::AppSettingImpl) { bind<AppSetting>() }
+    singleOf(::DataStoreManagerImpl) { bind<DataStoreManager>() }
 }

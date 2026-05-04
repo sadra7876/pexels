@@ -6,22 +6,21 @@ import com.example.feature.photos.domain.usecases.api.DarkModeUseCase
 import com.example.feature.photos.domain.usecases.api.GetPhotosUseCase
 import com.example.feature.photos.domain.usecases.impl.DarkModeUseCaseImpl
 import com.example.feature.photos.domain.usecases.impl.GetPhotosUseCaseImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.example.feature.photos.ui.screens.PhotosViewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class PhotosFeatureModule {
 
-    @Binds
-    internal abstract fun bindDarkModeUseCase (useCase: DarkModeUseCaseImpl): DarkModeUseCase
+val photosFeatureModule = module{
 
-    @Binds
-    internal abstract fun bindGetPhotosUseCase(useCase: GetPhotosUseCaseImpl): GetPhotosUseCase
+    singleOf(::DarkModeUseCaseImpl) { bind<DarkModeUseCase>() }
 
-    @Binds
-    internal abstract fun bindPhotosRepository(repository: PhotosRepositoryImpl): PhotosRepository
+    singleOf(::GetPhotosUseCaseImpl) { bind<GetPhotosUseCase>() }
+
+    singleOf(::PhotosRepositoryImpl) { bind<PhotosRepository>() }
+
+    viewModelOf(::PhotosViewModel)
 
 }

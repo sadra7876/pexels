@@ -8,17 +8,12 @@ import coil.memory.MemoryCache
 import coil.request.CachePolicy
 import coil.request.ErrorResult
 import coil.request.ImageRequest
-
 import coil.size.Size
 import coil.transform.Transformation
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
 
-@Singleton
-class PexelImageLoaderProvider @Inject constructor(
-    @ApplicationContext
+
+class PexelImageLoaderProvider(
     private val context: Context
 ) {
     val imageLoader : ImageLoader = ImageLoader.Builder(context)

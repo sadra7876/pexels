@@ -6,10 +6,8 @@ import com.example.feature.photodetail.domain.usecases.api.GetPhotoUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-internal class GetPhotoUseCaseImpl @Inject constructor (
+internal class GetPhotoUseCaseImpl(
     private val repository: PhotoDetailRepository
 ) : GetPhotoUseCase {
     override fun invoke(id: Long): Flow<PhotoDN> =

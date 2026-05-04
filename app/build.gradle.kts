@@ -2,8 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
@@ -54,10 +52,9 @@ dependencies {
 
     implementation(libs.navigation.compose)
     implementation(libs.androidx.work.ktx)
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.ext.work)
-    ksp(libs.hilt.ext.compiler)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.workmanager)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -71,6 +68,10 @@ dependencies {
     implementation(projects.common.image.loader)
     implementation(projects.core.dataStore)
     implementation(projects.core.worker)
-
-
+    implementation(projects.core.database)
+    implementation(projects.core.network)
+    implementation(projects.feature.favoritePhotos)
+    implementation(projects.feature.photoDetail)
+    implementation(projects.feature.photos)
+    implementation(projects.feature.searchPhotos)
 }

@@ -4,9 +4,8 @@ import com.example.feature.photodetail.domain.repository.PhotoDetailRepository
 import com.example.feature.photodetail.domain.usecases.api.FavoritePhotoUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-internal class FavoritePhotoUseCaseImpl @Inject constructor (
+internal class FavoritePhotoUseCaseImpl(
     private val repository: PhotoDetailRepository
 ) : FavoritePhotoUseCase{
     override suspend fun addToFavorite(photoId: Long) {
